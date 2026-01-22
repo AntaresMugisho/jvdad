@@ -5,6 +5,63 @@
 :root {
   --bg: 255 255 255;
   --fg: 15 23 42;
+  /* Primary Green Colors - Agricultural Theme */
+  --primary-green: #2d7a3e;
+  --primary-green-light: #3d9a52;
+  --primary-green-dark: #1d5a2e;
+  --primary-green-50: rgba(45, 122, 62, 0.05);
+  --primary-green-100: rgba(45, 122, 62, 0.1);
+  
+  /* Secondary Colors */
+  --secondary-green: #6ab04c;
+  --accent-yellow: #f9ca24;
+  --accent-orange: #f39c12;
+  
+  /* Neutral Colors */
+  --background: #ffffff;
+  --foreground: #1a1a1a;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  
+  /* Semantic Colors */
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --info: #3b82f6;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+  
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary-green);
+  --color-primary-light: var(--primary-green-light);
+  --color-primary-dark: var(--primary-green-dark);
+  --color-secondary: var(--secondary-green);
+  --color-accent: var(--accent-yellow);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
 }
 
 html, body {

@@ -10,7 +10,7 @@ export default function Hero() {
         <div className="max-w-3xl">
           <span className="badge">{org.tagline}</span>
           <h1 className="mt-4 text-4xl sm:text-5xl font-bold tracking-tight text-slate-900">
-            {org.name} — Innover pour une agriculture durable
+            {org.name} — Visons plus haut, Travaillons grand.
           </h1>
           <p className="mt-4 text-lg text-slate-600">
             Nous portons des projets agricoles responsables, développons des communautés rurales et partageons des bonnes pratiques pour nourrir demain.
