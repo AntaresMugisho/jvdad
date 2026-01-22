@@ -19,18 +19,7 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/components/*": [
-        "components/*"
-      ],
-      "@/lib/*": [
-        "lib/*"
-      ],
-      "@/data/*": [
-        "lib/data/*"
-      ],
-      "@/app/*": [
-        "app/*"
-      ]
+      "@/*": ["./*"]
     },
     "plugins": [
       {

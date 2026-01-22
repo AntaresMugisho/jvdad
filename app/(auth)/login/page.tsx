@@ -1,101 +1,93 @@
 "use client";
 
-import { useState, useEffect, useActionState } from "react";
-
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/lib/auth-context";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
+import { useToast } from "@/hooks/use-toast";
 import { Lock } from "lucide-react";
-import { loginAuthAction } from "@/actions/auth/auth_action";
-import { FaEye, FaEyeSlash } from "react-icons/fa6";
-import ToastHelper from "@/utils/toast_helper";
-import { ToastContainer } from "react-toastify";
-
-import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
-  const [visible, setVisible] = useState(false);
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { login, isAuthenticated } = useAuth();
   const router = useRouter();
-
-  const [state, action, isPending] = useActionState(loginAuthAction, {
-    errors: {},
-    email: "",
-    password: "",
-  });
+  const { toast } = useToast();
 
   useEffect(() => {
-    if (state.success) {
-      ToastHelper(state.message, true, false);
+    if (isAuthenticated) {
+      router.push("/dashboard");
+    }
+  }, [isAuthenticated, router]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (login(email, password)) {
+      toast({ title: "Connexion réussie" });
       router.push("/dashboard");
     } else {
-      ToastHelper(state.message, false, true);
+      toast({
+        title: "Erreur de connexion",
+        description: "Veuillez entrer une adresse email valide et un mot de passe",
+        variant: "destructive",
+      });
     }
-  }, [state]);
-
-  console.log("STATE :: ", state);
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <ToastContainer />
-      <div className="w-full rounded-md max-w-md p-8 shadow-xl shadow-slate-400/30 ">
+      <Card className="w-full max-w-md p-8">
         <div className="flex flex-col items-center mb-8">
           <div className="h-12 w-12 rounded-full bg-primary flex items-center justify-center mb-4">
             <Lock className="h-6 w-6 text-primary-foreground" />
           </div>
-          <h1 className="text-2xl font-semibold">AHDI asbl</h1>
+          <h1 className="text-2xl font-semibold">ASBL Dashboard</h1>
           <p className="text-sm text-muted-foreground mt-2">
-            Authentifiez-vous
+            Connectez-vous pour accéder au tableau de bord
           </p>
         </div>
 
-        <form action={action} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <Label htmlFor="email">Adresse email</Label>
             <Input
               id="email"
               type="email"
-              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="votre@email.com"
               required
+              data-testid="input-login-email"
             />
           </div>
 
-          <div className="relative">
+          <div>
             <Label htmlFor="password">Mot de passe</Label>
             <Input
               id="password"
-              name="password"
-              type={visible ? "text" : "password"}
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               required
+              data-testid="input-login-password"
             />
-
-            {visible ? (
-              <FaEyeSlash
-                onClick={() => setVisible(!visible)}
-                className="absolute top-8 right-2 text-xl cursor-pointer "
-              />
-            ) : (
-              <FaEye
-                onClick={() => setVisible(!visible)}
-                className="absolute top-8 right-2 text-xl cursor-pointer "
-              />
-            )}
           </div>
 
-          {isPending ? (
-            <div className="border-b-2 mx-auto animate-spin border-green-500 h-6 w-6 rounded-full" />
-          ) : (
-            <button
-              type="submit"
-              className="w-full bg-green-500 py-1 text-white transition-all duration-300 hover:opacity-70 "
-            >
-              Se connecter
-            </button>
-          )}
+          <Button type="submit" className="w-full" data-testid="button-login">
+            Se connecter
+          </Button>
+
+          <p className="text-xs text-center text-muted-foreground">
+            Entrez n'importe quelle adresse email valide et mot de passe pour vous connecter
+          </p>
         </form>
-      </div>
+      </Card>
     </div>
   );
 }
+
+

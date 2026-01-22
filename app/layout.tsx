@@ -7,7 +7,7 @@ import ChatWidget from '@/components/ChatWidget'
 import { org } from '@/lib/config'
 
 export const metadata: Metadata = {
-  title: `${org.name} · Organisation Agricole`,
+  title: `${org.name} · JVDAD Asbl`,
   description: org.tagline,
   icons: { icon: '/logo.svg' },
 }
