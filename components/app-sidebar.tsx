@@ -3,7 +3,7 @@
 import { FileText, FolderOpen, Shield, User, Home, LogOut } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useAuth } from "@/lib/auth-context";
+import { useAuthStore } from "@/lib/auth-store";
 import {
   Sidebar,
   SidebarContent,
@@ -50,7 +50,7 @@ const menuItems = [
 export function AppSidebar() {
   const pathname = usePathname();
   const router = useRouter();
-  const { logout } = useAuth();
+  const { logout } = useAuthStore();
 
   const handleLogout = () => {
     logout();

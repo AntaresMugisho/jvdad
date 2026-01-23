@@ -1,7 +1,7 @@
 "use client";
 
 import './dashboard.css';
-import { ProtectedRoute } from "@/lib/auth-context";
+import { AuthGuard } from "@/components/auth-guard";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -19,7 +19,7 @@ export default function DashboardLayout({
 
   return (
     <ThemeProvider>
-      <ProtectedRoute>
+      <AuthGuard>
         <SidebarProvider style={style as React.CSSProperties}>
           <div className="flex h-screen w-full">
             <AppSidebar />
@@ -32,7 +32,7 @@ export default function DashboardLayout({
             </div>
           </div>
         </SidebarProvider>
-      </ProtectedRoute>
+      </AuthGuard>
     </ThemeProvider>
   );
 }

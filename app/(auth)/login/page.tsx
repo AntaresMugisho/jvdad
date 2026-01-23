@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/lib/auth-context";
+import { useAuthStore } from "@/lib/auth-store";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -14,7 +14,7 @@ import { Lock } from "lucide-react";
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, isAuthenticated } = useAuth();
+  const { login, isAuthenticated } = useAuthStore();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -26,13 +26,15 @@ export default function LoginPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (login(email, password)) {
+    // Mock login: accept any non-empty email/password
+    if (email && password) {
+      login(email);
       toast({ title: "Connexion réussie" });
       router.push("/dashboard");
     } else {
       toast({
         title: "Erreur de connexion",
-        description: "Veuillez entrer une adresse email valide et un mot de passe",
+        description: "Veuillez entrer une adresse email et un mot de passe",
         variant: "destructive",
       });
     }
@@ -45,7 +47,7 @@ export default function LoginPage() {
           <div className="h-12 w-12 rounded-full bg-primary flex items-center justify-center mb-4">
             <Lock className="h-6 w-6 text-primary-foreground" />
           </div>
-          <h1 className="text-2xl font-semibold">ASBL Dashboard</h1>
+          <h1 className="text-2xl font-semibold">JVDAD Dashboard</h1>
           <p className="text-sm text-muted-foreground mt-2">
             Connectez-vous pour accéder au tableau de bord
           </p>

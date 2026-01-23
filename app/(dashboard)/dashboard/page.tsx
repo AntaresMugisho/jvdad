@@ -1,61 +1,64 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import { FileText, FolderOpen, TrendingUp } from "lucide-react";
-import { blogStorage } from "@/lib/blog-storage";
-import { fileStorage } from "@/lib/file-storage";
-import { useEffect, useState } from "react";
+import { FileText, FolderOpen, TrendingUp, Users, DollarSign } from "lucide-react";
+import { useDashboardStore } from "@/lib/dashboard-store";
+import { useEffect } from "react";
 
 export default function Dashboard() {
-  const [posts, setPosts] = useState<any[]>([]);
-  const [files, setFiles] = useState<any[]>([]);
+  const { stats, recentActivity, isLoading, fetchData } = useDashboardStore()
 
   useEffect(() => {
-    setPosts(blogStorage.getPosts());
-    setFiles(fileStorage.getItems());
-  }, []);
+    fetchData()
+  }, [fetchData])
 
-  const stats = [
+  const statCards = [
     {
-      label: "Articles",
-      value: posts.length,
-      icon: FileText,
+      label: "Projets Totaux",
+      value: stats.totalProjects,
+      icon: FolderOpen,
       color: "text-blue-500",
     },
     {
-      label: "Fichiers",
-      value: files.length,
-      icon: FolderOpen,
+      label: "Projets Actifs",
+      value: stats.activeProjects,
+      icon: TrendingUp,
       color: "text-green-500",
     },
     {
-      label: "Total",
-      value: posts.length + files.length,
-      icon: TrendingUp,
+      label: "Bénéficiaires",
+      value: stats.beneficiaries.toLocaleString(),
+      icon: Users,
       color: "text-purple-500",
+    },
+    {
+      label: "Budget Total",
+      value: `${stats.totalBudget.toLocaleString()} $`,
+      icon: DollarSign,
+      color: "text-yellow-500",
     },
   ];
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-semibold">Tableau de bord</h1>
+        <h1 className="text-3xl font-semibold">Tableau de bord JVDAD</h1>
         <p className="text-muted-foreground mt-1">
-          Bienvenue dans votre espace de gestion.
+          Vue d'ensemble des activités et de l'impact.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {stats.map((stat) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {statCards.map((stat) => (
           <Card key={stat.label} className="p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">{stat.label}</p>
-                <p className="text-3xl font-semibold mt-2" data-testid={`text-stat-${stat.label.toLowerCase()}`}>
+                <p className="text-2xl font-bold mt-2" data-testid={`text-stat-${stat.label.toLowerCase().replace(' ', '-')}`}>
                   {stat.value}
                 </p>
               </div>
-              <stat.icon className={`h-12 w-12 ${stat.color}`} />
+              <stat.icon className={`h-8 w-8 ${stat.color}`} />
             </div>
           </Card>
         ))}
@@ -63,22 +66,27 @@ export default function Dashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="p-6">
-          <h2 className="text-xl font-semibold mb-4">Articles récents</h2>
-          {posts.length === 0 ? (
-            <p className="text-sm text-muted-foreground">Aucun article publié</p>
+          <h2 className="text-xl font-semibold mb-4">Activités Récentes</h2>
+          {isLoading ? (
+            <p className="text-sm text-muted-foreground">Chargement...</p>
+          ) : recentActivity.length === 0 ? (
+            <p className="text-sm text-muted-foreground">Aucune activité récente</p>
           ) : (
-            <div className="space-y-3">
-              {posts.slice(0, 5).map((post) => (
+            <div className="space-y-4">
+              {recentActivity.map((activity) => (
                 <div
-                  key={post.id}
-                  className="flex items-start gap-3 p-3 rounded-md hover-elevate"
+                  key={activity.id}
+                  className="flex items-start gap-4 p-3 rounded-lg hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100"
                 >
-                  <FileText className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+                  <div className={`p-2 rounded-full ${activity.type === 'project' ? 'bg-blue-100 text-blue-600' : activity.type === 'user' ? 'bg-green-100 text-green-600' : 'bg-purple-100 text-purple-600'}`}>
+                    {activity.type === 'project' ? <FolderOpen size={16} /> : activity.type === 'user' ? <Users size={16} /> : <FileText size={16} />}
+                  </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium truncate">{post.title}</p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {new Date(post.createdAt).toLocaleDateString("fr-FR")}
-                    </p>
+                    <p className="font-medium text-sm">{activity.action}</p>
+                    <p className="text-xs text-muted-foreground truncate">{activity.target}</p>
+                  </div>
+                  <div className="text-xs text-muted-foreground whitespace-nowrap">
+                    {new Date(activity.date).toLocaleDateString("fr-FR")}
                   </div>
                 </div>
               ))}
@@ -86,28 +94,19 @@ export default function Dashboard() {
           )}
         </Card>
 
-        <Card className="p-6">
-          <h2 className="text-xl font-semibold mb-4">Fichiers récents</h2>
-          {files.length === 0 ? (
-            <p className="text-sm text-muted-foreground">Aucun fichier ajouté</p>
-          ) : (
-            <div className="space-y-3">
-              {files.slice(0, 5).map((file) => (
-                <div
-                  key={file.id}
-                  className="flex items-start gap-3 p-3 rounded-md hover-elevate"
-                >
-                  <FolderOpen className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium truncate">{file.name}</p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {file.type === "folder" ? "Dossier" : "Fichier"}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+        <Card className="p-6 flex flex-col justify-center items-center text-center space-y-4">
+          <div className="p-4 bg-green-50 rounded-full">
+            <TrendingUp className="h-12 w-12 text-green-600" />
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold">Impact Mensuel</h3>
+            <p className="text-sm text-muted-foreground max-w-xs mx-auto mt-2">
+              Les données montrent une augmentation de 15% des bénéficiaires ce mois-ci.
+            </p>
+          </div>
+          <button className="text-sm font-medium text-green-600 hover:text-green-700 hover:underline">
+            Voir le rapport complet
+          </button>
         </Card>
       </div>
     </div>
