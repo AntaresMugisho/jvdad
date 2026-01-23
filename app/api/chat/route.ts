@@ -12,7 +12,6 @@ export async function POST(req: NextRequest) {
   try {
     const { messages } = await req.json()
 
-    console.log(messages)
     const lastMessage = messages[messages.length - 1]
     const userMessage = lastMessage.content
 
@@ -30,6 +29,7 @@ export async function POST(req: NextRequest) {
     
     INFORMATIONS JVDAD:
     Nom: ${org.name}
+    Nom complet : Jeunes Visionaires pour le Développement et l'Agriculture Durable
     Mission: Autonomiser les communautés rurales par l'agriculture durable.
     Contact WhatsApp: ${links.whatsapp}
     Email: ${links.mailto}
@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
        - Si c'est entre 8h et 17h, dis que l'équipe est disponible et donne le lien WhatsApp: ${links.whatsapp}
        - Sinon, dis que l'équipe est indisponible mais qu'il peut laisser un message sur WhatsApp: ${links.whatsapp}
     5. Sois courtois, professionnel et encourageant.
-    6. Réponds en français.
+    6. Réponds dans la langue que l'utilisateur utilise mais que ce soit le français, l'anglais ou le swahili. Si l'utilisateur te parle dans une autre langue que ces trois là, dit-lui poliment que tu ne comprends pas sa langue.
     `
 
     if (!process.env.GEMINI_API_KEY) {
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
     const model = genAI.getGenerativeModel({ model: 'gemini-3-flash-preview' })
 
     const chat = model.startChat({
-      history: messages.slice(0, -1).map((m: any) => ({
+      history: messages.slice(1, -1).map((m: any) => ({
         role: m.role === 'user' ? 'user' : 'model',
         parts: [{ text: m.content }],
       })),
