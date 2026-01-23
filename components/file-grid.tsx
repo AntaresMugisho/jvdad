@@ -1,6 +1,7 @@
 import { FileItem } from "@/lib/file-storage";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import Button from "@/components/ui/Button";
+
 import {
   Folder,
   FileText,

@@ -4,7 +4,8 @@ import { useState } from "react";
 import { fileStorage, FileItem } from "@/lib/file-storage";
 import { FileGrid } from "@/components/file-grid";
 import { UploadZone } from "@/components/upload-zone";
-import { Button } from "@/components/ui/button";
+import Button from "@/components/ui/Button";
+
 import { Input } from "@/components/ui/input";
 import {
   Dialog,

@@ -4,7 +4,8 @@ import { useState } from "react";
 import { blogStorage, BlogPost } from "@/lib/blog-storage";
 import { BlogCard } from "@/components/blog-card";
 import { BlogForm } from "@/components/blog-form";
-import { Button } from "@/components/ui/button";
+import Button from "@/components/ui/Button";
+
 import { Plus, Grid, List, ChevronLeft, ChevronRight } from "lucide-react";
 import {
   AlertDialog,

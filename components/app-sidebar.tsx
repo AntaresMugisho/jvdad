@@ -16,7 +16,8 @@ import {
   SidebarHeader,
   SidebarFooter,
 } from "@/components/ui/sidebar";
-import { Button } from "@/components/ui/button";
+import Button from "@/components/ui/Button";
+
 
 const menuItems = [
   {

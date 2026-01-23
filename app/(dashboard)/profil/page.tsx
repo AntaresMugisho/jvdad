@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import Button from "@/components/ui/Button";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -24,12 +25,12 @@ export default function Profile() {
     return saved
       ? JSON.parse(saved)
       : {
-          name: "Jean Dupont",
-          email: "jean.dupont@asbl.org",
-          organization: "ASBL Example",
-          bio: "Administrateur de l'ASBL",
-          avatar: "",
-        };
+        name: "Jean Dupont",
+        email: "jean.dupont@asbl.org",
+        organization: "ASBL Example",
+        bio: "Administrateur de l'ASBL",
+        avatar: "",
+      };
   });
 
   const { toast } = useToast();

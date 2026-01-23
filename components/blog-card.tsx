@@ -2,7 +2,8 @@ import { BlogPost } from "@/lib/blog-storage";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Edit, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import Button from "@/components/ui/Button";
+
 
 interface BlogCardProps {
   post: BlogPost;
