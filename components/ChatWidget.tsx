@@ -48,7 +48,7 @@ export default function ChatWidget() {
       const assistant: ChatMessage = {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: "Je rencontre un souci pour répondre. Vous pouvez nous écrire directement sur WhatsApp en cliquant ci-dessous.",
+        content: `Je rencontre un souci pour répondre à votre rêquete. Vous pouvez reessayer un peu plus tard. \n\n_Si le problème persiste, n'hésitez pas à contacter notre service client (disponible du lundi au vendredi de 8h00 à 17h00) en cliquant ci-dessous:_\n- [**Ouvrir WhatsApp**](${links.whatsapp})\n- [**Envoyer un mail**](${links.mailto})`,
         timestamp: new Date().toISOString(),
       }
       setMessages((prev) => [...prev, assistant])
