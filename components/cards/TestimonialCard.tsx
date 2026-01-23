@@ -16,8 +16,12 @@ export default function TestimonialCard({ testimonial }: TestimonialCardProps) {
 
             <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
                 {testimonial.avatar && (
-                    <div className="text-3xl">
-                        {testimonial.avatar}
+                    <div className="relative w-10 h-10 rounded-full overflow-hidden">
+                        <img
+                            src={testimonial.avatar}
+                            alt={testimonial.name}
+                            className="object-cover w-full h-full"
+                        />
                     </div>
                 )}
                 <div>

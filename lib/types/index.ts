@@ -23,7 +23,7 @@ export interface Post {
   image: string
   tags: string[]
   author?: string
-  content?: string
+  content?: any[] // EditorJS blocks
 }
 
 export interface GalleryImage {

@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { contentService } from '@/lib/services/content'
 import PostCard from '@/components/cards/PostCard'
+import BlockRenderer from '@/components/BlockRenderer'
 import { FaArrowLeft, FaCalendar, FaUser, FaWhatsapp, FaFacebook, FaTwitter } from 'react-icons/fa'
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
@@ -25,9 +26,6 @@ export default async function BlogDetailPage({ params }: { params: { id: string 
     const relatedPosts = allPosts
         .filter(p => p.id !== post.id && p.tags.some(tag => post.tags.includes(tag)))
         .slice(0, 3)
-
-    // Format content with proper line breaks
-    const contentParagraphs = post.content?.split('\n').filter(line => line.trim()) || []
 
     const shareUrl = typeof window !== 'undefined' ? window.location.href : ''
     const shareText = `${post.title} - JVDAD`
@@ -94,48 +92,16 @@ export default async function BlogDetailPage({ params }: { params: { id: string 
             {/* Main Content */}
             <div className="container mx-auto px-4 py-12">
                 <div className="max-w-4xl mx-auto">
+
                     {/* Article Content */}
                     <article className="bg-white rounded-xl shadow-md p-8 md:p-12 mb-8">
-                        <div className="prose prose-lg max-w-none">
-                            {contentParagraphs.map((paragraph, index) => {
-                                // Check if it's a heading
-                                if (paragraph.startsWith('# ')) {
-                                    return <h1 key={index} className="text-3xl font-bold mt-8 mb-4 text-gray-900">{paragraph.substring(2)}</h1>
-                                } else if (paragraph.startsWith('## ')) {
-                                    return <h2 key={index} className="text-2xl font-bold mt-6 mb-3 text-gray-900">{paragraph.substring(3)}</h2>
-                                } else if (paragraph.startsWith('### ')) {
-                                    return <h3 key={index} className="text-xl font-semibold mt-4 mb-2 text-[var(--primary-green)]">{paragraph.substring(4)}</h3>
-                                } else if (paragraph.startsWith('- ')) {
-                                    return (
-                                        <li key={index} className="ml-6 text-gray-700 leading-relaxed list-disc">
-                                            {paragraph.substring(2).replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').split('<strong>').map((part, i) =>
-                                                i % 2 === 0 ? part : <strong key={i} className="font-semibold text-gray-900">{part.replace('</strong>', '')}</strong>
-                                            )}
-                                        </li>
-                                    )
-                                } else if (paragraph.match(/^\d+\./)) {
-                                    return (
-                                        <li key={index} className="ml-6 text-gray-700 leading-relaxed list-decimal">
-                                            {paragraph.replace(/^\d+\.\s/, '')}
-                                        </li>
-                                    )
-                                } else if (paragraph.trim() && !paragraph.startsWith('#')) {
-                                    // Regular paragraph - Handle bold text with **
-                                    const parts = paragraph.split(/(\*\*.*?\*\*)/g)
-                                    return (
-                                        <p key={index} className="text-gray-700 leading-relaxed mb-4">
-                                            {parts.map((part, i) => {
-                                                if (part.startsWith('**') && part.endsWith('**')) {
-                                                    return <strong key={i} className="font-semibold text-gray-900">{part.slice(2, -2)}</strong>
-                                                }
-                                                return part
-                                            })}
-                                        </p>
-                                    )
-                                }
-                                return null
-                            })}
-                        </div>
+                        {post.content && Array.isArray(post.content) ? (
+                            <BlockRenderer blocks={post.content} />
+                        ) : (
+                            <div className="prose prose-lg max-w-none">
+                                <p className="text-gray-500 italic">Contenu non disponible ou format incorrect.</p>
+                            </div>
+                        )}
                     </article>
 
                     {/* Share Buttons */}

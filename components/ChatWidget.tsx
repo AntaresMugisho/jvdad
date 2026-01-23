@@ -72,13 +72,13 @@ export default function ChatWidget() {
               <span className="text-xs opacity-90">type WhatsApp</span>
             </div>
             <button aria-label="Fermer" onClick={() => setOpen(false)} className="p-1 rounded hover:bg-primary-700">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5"><path d="M6.225 4.811 4.811 6.225 10.586 12l-5.775 5.775 1.414 1.414L12 13.414l5.775 5.775 1.414-1.414L13.414 12l5.775-5.775-1.414-1.414L12 10.586z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5"><path d="M6.225 4.811 4.811 6.225 10.586 12l-5.775 5.775 1.414 1.414L12 13.414l5.775 5.775 1.414-1.414L13.414 12l5.775-5.775-1.414-1.414L12 10.586z" /></svg>
             </button>
           </header>
           <div className="max-h-80 overflow-y-auto p-3 space-y-3 bg-slate-50">
             {messages.map((m) => (
               <div key={m.id} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`${m.role === 'user' ? 'bg-primary-600 text-white' : 'bg-white border'} rounded-2xl px-3 py-2 max-w-[80%] text-sm`}>{m.content}</div>
+                <div className={`${m.role === 'user' ? 'bg-primary-600 text-white' : 'bg-white border'} rounded-2xl px-3 py-2 max-w-[80%] text-sm whitespace-pre-wrap`}>{m.content}</div>
               </div>
             ))}
             {loading && (
@@ -116,7 +116,7 @@ export default function ChatWidget() {
         className="inline-flex items-center gap-2 rounded-full bg-primary-600 px-4 py-3 text-white shadow-lg hover:bg-primary-700"
         aria-label="Ouvrir le chat"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5"><path d="M2.25 4.5A2.25 2.25 0 0 1 4.5 2.25h15A2.25 2.25 0 0 1 21.75 4.5v9a2.25 2.25 0 0 1-2.25 2.25H8.742L4.5 21.75v-6H4.5A2.25 2.25 0 0 1 2.25 13.5v-9z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5"><path d="M2.25 4.5A2.25 2.25 0 0 1 4.5 2.25h15A2.25 2.25 0 0 1 21.75 4.5v9a2.25 2.25 0 0 1-2.25 2.25H8.742L4.5 21.75v-6H4.5A2.25 2.25 0 0 1 2.25 13.5v-9z" /></svg>
         <span className="font-medium">Chat</span>
       </button>
     </div>

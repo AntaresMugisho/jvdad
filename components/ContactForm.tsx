@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { FaPaperPlane } from 'react-icons/fa'
 
-export default function ContactForm() {
+export default function ContactForm({ variant = 'default' }: { variant?: 'default' | 'footer' }) {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -13,6 +13,10 @@ export default function ContactForm() {
     const [errors, setErrors] = useState<Record<string, string>>({})
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+
+    const isFooter = variant === 'footer'
+    const inputBg = isFooter ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-400' : 'bg-white border-gray-300 text-gray-900'
+    const labelColor = isFooter ? 'text-gray-300' : 'text-gray-700'
 
     const validateForm = () => {
         const newErrors: Record<string, string> = {}
@@ -82,13 +86,13 @@ export default function ContactForm() {
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
             {submitStatus === 'success' && (
-                <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-green-800">
+                <div className={`p-4 rounded-lg ${isFooter ? 'bg-green-900/30 border-green-800 text-green-300' : 'bg-green-50 border-green-200 text-green-800'} border`}>
                     ✓ Votre message a été envoyé avec succès! Nous vous répondrons dans les plus brefs délais.
                 </div>
             )}
 
             <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="name" className={`block text-sm font-medium mb-2 ${labelColor}`}>
                     Nom complet *
                 </label>
                 <input
@@ -97,15 +101,14 @@ export default function ContactForm() {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className={`w-full px-4 py-3 rounded-lg border ${errors.name ? 'border-red-500' : 'border-gray-300'
-                        } focus:ring-2 focus:ring-[var(--primary-green)] focus:border-transparent transition-all`}
+                    className={`w-full px-4 py-3 rounded-lg border ${errors.name ? 'border-red-500' : inputBg} focus:ring-2 focus:ring-[var(--primary-green)] focus:border-transparent transition-all`}
                     placeholder="Jean Dupont"
                 />
                 {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
             </div>
 
             <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="email" className={`block text-sm font-medium mb-2 ${labelColor}`}>
                     Email *
                 </label>
                 <input
@@ -114,15 +117,14 @@ export default function ContactForm() {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className={`w-full px-4 py-3 rounded-lg border ${errors.email ? 'border-red-500' : 'border-gray-300'
-                        } focus:ring-2 focus:ring-[var(--primary-green)] focus:border-transparent transition-all`}
+                    className={`w-full px-4 py-3 rounded-lg border ${errors.email ? 'border-red-500' : inputBg} focus:ring-2 focus:ring-[var(--primary-green)] focus:border-transparent transition-all`}
                     placeholder="jean.dupont@example.com"
                 />
                 {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
             </div>
 
             <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="subject" className={`block text-sm font-medium mb-2 ${labelColor}`}>
                     Sujet *
                 </label>
                 <input
@@ -131,15 +133,14 @@ export default function ContactForm() {
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    className={`w-full px-4 py-3 rounded-lg border ${errors.subject ? 'border-red-500' : 'border-gray-300'
-                        } focus:ring-2 focus:ring-[var(--primary-green)] focus:border-transparent transition-all`}
+                    className={`w-full px-4 py-3 rounded-lg border ${errors.subject ? 'border-red-500' : inputBg} focus:ring-2 focus:ring-[var(--primary-green)] focus:border-transparent transition-all`}
                     placeholder="Demande d'information"
                 />
                 {errors.subject && <p className="mt-1 text-sm text-red-600">{errors.subject}</p>}
             </div>
 
             <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="message" className={`block text-sm font-medium mb-2 ${labelColor}`}>
                     Message *
                 </label>
                 <textarea
@@ -148,8 +149,7 @@ export default function ContactForm() {
                     rows={6}
                     value={formData.message}
                     onChange={handleChange}
-                    className={`w-full px-4 py-3 rounded-lg border ${errors.message ? 'border-red-500' : 'border-gray-300'
-                        } focus:ring-2 focus:ring-[var(--primary-green)] focus:border-transparent transition-all resize-none`}
+                    className={`w-full px-4 py-3 rounded-lg border ${errors.message ? 'border-red-500' : inputBg} focus:ring-2 focus:ring-[var(--primary-green)] focus:border-transparent transition-all resize-none`}
                     placeholder="Votre message..."
                 />
                 {errors.message && <p className="mt-1 text-sm text-red-600">{errors.message}</p>}

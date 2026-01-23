@@ -24,7 +24,7 @@ export default function Navbar() {
       <Container className="flex h-16 items-center justify-between">
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-2">
-            <img src="/logo.svg" alt="Logo" className="h-8 w-8" />
+            <img src="/images/logo.jpeg" alt="Logo" className="h-8 w-8" />
             <span className="font-bold tracking-tight">{org.name}</span>
           </Link>
         </div>

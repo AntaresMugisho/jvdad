@@ -1,27 +1,30 @@
-import { NextRequest, NextResponse } from 'next/server'
+
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { posts } from '@/lib/data/posts'
 import { projects } from '@/lib/data/projects'
 import { testimonials } from '@/lib/data/testimonials'
 import { org, links } from '@/lib/config'
+import dotenv from 'dotenv'
 
-// Initialize Gemini API
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '')
+// Load env vars
+dotenv.config({ path: '.env.local' })
 
-export async function POST(req: NextRequest) {
-  try {
-    const { messages } = await req.json()
-    const lastMessage = messages[messages.length - 1]
-    const userMessage = lastMessage.content
+async function main() {
+    console.log("Checking GEMINI_API_KEY...")
+    if (!process.env.GEMINI_API_KEY) {
+        console.error("❌ GEMINI_API_KEY is missing in .env.local")
+        process.exit(1)
+    }
+    console.log("✅ GEMINI_API_KEY found")
 
-    // Check for human handover availability (8h-17h UTC+2)
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
+    const model = genAI.getGenerativeModel({ model: 'gemini-pro' })
+
+    // Construct Context (same as in route.ts)
     const now = new Date()
     const utc = now.getTime() + (now.getTimezoneOffset() * 60000)
-    const drcTime = new Date(utc + (3600000 * 2)) // UTC+2
-    const hour = drcTime.getHours()
-    const isBusinessHours = hour >= 8 && hour < 17
+    const drcTime = new Date(utc + (3600000 * 2))
 
-    // Construct Context
     const context = `
     Tu es l'assistant virtuel de JVDAD (${org.tagline}).
     Ton rôle est de répondre aux questions sur l'organisation, ses projets, et l'agriculture durable.
@@ -52,27 +55,32 @@ export async function POST(req: NextRequest) {
     6. Réponds en français.
     `
 
-    if (!process.env.GEMINI_API_KEY) {
-      console.error("GEMINI_API_KEY is missing")
-      return NextResponse.json({ reply: "Configuration manquante: Clé API Gemini introuvable. Veuillez contacter l'administrateur." }, { status: 500 })
+    const userMessage = "Quels sont vos projets agricoles ?"
+    console.log(`\nTesting with message: "${userMessage}"\n`)
+
+    try {
+        const chat = model.startChat({
+            history: [],
+        })
+        const result = await chat.sendMessage(context + "\n\nQuestion utilisateur: " + userMessage)
+        const response = result.response.text()
+
+        console.log("✅ API Response received:")
+        console.log("---------------------------------------------------")
+        console.log(response)
+        console.log("---------------------------------------------------")
+
+        if (response.length > 0) {
+            console.log("✅ Verification PASSED")
+        } else {
+            console.error("❌ Verification FAILED: Empty response")
+            process.exit(1)
+        }
+
+    } catch (e) {
+        console.error("❌ Verification FAILED:", e)
+        process.exit(1)
     }
-
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' })
-
-    const chat = model.startChat({
-      history: messages.slice(0, -1).map((m: any) => ({
-        role: m.role === 'user' ? 'user' : 'model',
-        parts: [{ text: m.content }],
-      })),
-    })
-
-    const result = await chat.sendMessage(context + "\n\nQuestion utilisateur: " + userMessage)
-    const response = result.response
-    const text = response.text()
-
-    return NextResponse.json({ reply: text })
-  } catch (e) {
-    console.error("Chat API Error:", e)
-    return NextResponse.json({ reply: "Désolé, je rencontre des difficultés techniques. Vous pouvez nous écrire sur WhatsApp." }, { status: 500 })
-  }
 }
+
+main()
