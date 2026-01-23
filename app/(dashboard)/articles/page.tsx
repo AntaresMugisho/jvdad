@@ -4,7 +4,7 @@ import { useState } from "react";
 import { blogStorage, BlogPost } from "@/lib/blog-storage";
 import { BlogCard } from "@/components/blog-card";
 import { BlogForm } from "@/components/blog-form";
-import Button from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 import { Plus, Grid, List, ChevronLeft, ChevronRight } from "lucide-react";
 import {
@@ -88,8 +88,8 @@ export default function Blog() {
         </div>
         <div className="flex gap-2">
           <Button
-            variant="outline"
-            size="icon"
+            variant="secondary"
+            size="sm"
             onClick={() => setViewMode("grid")}
             className={viewMode === "grid" ? "bg-accent" : ""}
             data-testid="button-view-grid"
@@ -97,8 +97,8 @@ export default function Blog() {
             <Grid className="h-4 w-4" />
           </Button>
           <Button
-            variant="outline"
-            size="icon"
+            variant="secondary"
+            size="sm"
             onClick={() => setViewMode("list")}
             className={viewMode === "list" ? "bg-accent" : ""}
             data-testid="button-view-list"
@@ -137,8 +137,8 @@ export default function Blog() {
           {totalPages > 1 && (
             <div className="flex items-center justify-center gap-2">
               <Button
-                variant="outline"
-                size="icon"
+                variant="secondary"
+                size="sm"
                 onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                 disabled={currentPage === 1}
                 data-testid="button-prev-page"
@@ -149,8 +149,8 @@ export default function Blog() {
                 Page {currentPage} sur {totalPages}
               </span>
               <Button
-                variant="outline"
-                size="icon"
+                variant="secondary"
+                size="sm"
                 onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                 disabled={currentPage === totalPages}
                 data-testid="button-next-page"

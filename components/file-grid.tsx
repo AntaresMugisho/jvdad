@@ -1,6 +1,6 @@
 import { FileItem } from "@/lib/file-storage";
 import { Card } from "@/components/ui/card";
-import Button from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 import {
   Folder,
@@ -66,7 +66,7 @@ export function FileGrid({ items, onItemClick, onDelete, onRename }: FileGridPro
               <div className="flex gap-1 w-full justify-center">
                 {item.type === "file" && (
                   <Button
-                    size="icon"
+                    size="sm"
                     variant="ghost"
                     onClick={(e) => {
                       e.stopPropagation();
@@ -83,7 +83,7 @@ export function FileGrid({ items, onItemClick, onDelete, onRename }: FileGridPro
                   </Button>
                 )}
                 <Button
-                  size="icon"
+                  size="sm"
                   variant="ghost"
                   onClick={(e) => {
                     e.stopPropagation();
@@ -94,7 +94,7 @@ export function FileGrid({ items, onItemClick, onDelete, onRename }: FileGridPro
                   <Edit className="h-4 w-4" />
                 </Button>
                 <Button
-                  size="icon"
+                  size="sm"
                   variant="ghost"
                   onClick={(e) => {
                     e.stopPropagation();

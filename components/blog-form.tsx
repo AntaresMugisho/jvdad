@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { BlogPost } from "@/lib/blog-storage";
-import Button from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -77,7 +77,7 @@ export function BlogForm({ post, onSubmit, onCancel }: BlogFormProps) {
                   />
                   <Button
                     type="button"
-                    size="icon"
+                    size="sm"
                     variant="destructive"
                     className="absolute top-2 right-2"
                     onClick={() => setCoverImage("")}
@@ -153,7 +153,7 @@ export function BlogForm({ post, onSubmit, onCancel }: BlogFormProps) {
               <Button
                 type="button"
                 onClick={addTag}
-                variant="outline"
+                variant="secondary"
                 data-testid="button-add-tag"
               >
                 Ajouter
@@ -191,7 +191,7 @@ export function BlogForm({ post, onSubmit, onCancel }: BlogFormProps) {
       <div className="flex gap-3 justify-end">
         <Button
           type="button"
-          variant="outline"
+          variant="secondary"
           onClick={onCancel}
           data-testid="button-cancel"
         >

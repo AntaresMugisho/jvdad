@@ -2,7 +2,7 @@ import { BlogPost } from "@/lib/blog-storage";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Edit, Trash2 } from "lucide-react";
-import Button from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 
 interface BlogCardProps {
@@ -50,7 +50,7 @@ export function BlogCard({ post, viewMode, onEdit, onDelete }: BlogCardProps) {
             </div>
             <div className="flex gap-1">
               <Button
-                size="icon"
+                size="sm"
                 variant="ghost"
                 onClick={() => onEdit?.(post)}
                 data-testid={`button-edit-${post.id}`}
@@ -58,7 +58,7 @@ export function BlogCard({ post, viewMode, onEdit, onDelete }: BlogCardProps) {
                 <Edit className="h-4 w-4" />
               </Button>
               <Button
-                size="icon"
+                size="sm"
                 variant="ghost"
                 onClick={() => onDelete?.(post.id)}
                 data-testid={`button-delete-${post.id}`}
@@ -109,7 +109,7 @@ export function BlogCard({ post, viewMode, onEdit, onDelete }: BlogCardProps) {
         </div>
         <div className="flex flex-col gap-1">
           <Button
-            size="icon"
+            size="sm"
             variant="ghost"
             onClick={() => onEdit?.(post)}
             data-testid={`button-edit-${post.id}`}
@@ -117,7 +117,7 @@ export function BlogCard({ post, viewMode, onEdit, onDelete }: BlogCardProps) {
             <Edit className="h-4 w-4" />
           </Button>
           <Button
-            size="icon"
+            size="sm"
             variant="ghost"
             onClick={() => onDelete?.(post.id)}
             data-testid={`button-delete-${post.id}`}

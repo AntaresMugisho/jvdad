@@ -16,7 +16,7 @@ import {
   SidebarHeader,
   SidebarFooter,
 } from "@/components/ui/sidebar";
-import Button from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 
 const menuItems = [
@@ -87,7 +87,7 @@ export function AppSidebar() {
       </SidebarContent>
       <SidebarFooter className="p-4">
         <Button
-          variant="outline"
+          variant="secondary"
           onClick={handleLogout}
           className="w-full justify-start"
           data-testid="button-logout"

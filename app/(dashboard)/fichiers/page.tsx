@@ -4,7 +4,7 @@ import { useState } from "react";
 import { fileStorage, FileItem } from "@/lib/file-storage";
 import { FileGrid } from "@/components/file-grid";
 import { UploadZone } from "@/components/upload-zone";
-import Button from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 import { Input } from "@/components/ui/input";
 import {
@@ -169,7 +169,7 @@ export default function FileManager() {
             data-testid="input-folder-name"
           />
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowNewFolder(false)} data-testid="button-cancel-folder">
+            <Button variant="secondary" onClick={() => setShowNewFolder(false)} data-testid="button-cancel-folder">
               Annuler
             </Button>
             <Button onClick={handleCreateFolder} data-testid="button-create-folder">
@@ -192,7 +192,7 @@ export default function FileManager() {
             data-testid="input-rename"
           />
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowRename(null)} data-testid="button-cancel-rename">
+            <Button variant="secondary" onClick={() => setShowRename(null)} data-testid="button-cancel-rename">
               Annuler
             </Button>
             <Button onClick={handleRename} data-testid="button-confirm-rename">
