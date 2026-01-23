@@ -11,6 +11,8 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '')
 export async function POST(req: NextRequest) {
   try {
     const { messages } = await req.json()
+
+    console.log(messages)
     const lastMessage = messages[messages.length - 1]
     const userMessage = lastMessage.content
 
