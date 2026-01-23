@@ -18,7 +18,7 @@ async function main() {
     console.log("✅ GEMINI_API_KEY found")
 
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' })
+    const model = genAI.getGenerativeModel({ model: 'gemini-3-flash-preview' })
 
     // Construct Context (same as in route.ts)
     const now = new Date()

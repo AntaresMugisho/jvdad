@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ reply: "Configuration manquante: Clé API Gemini introuvable. Veuillez contacter l'administrateur." }, { status: 500 })
     }
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' })
+    const model = genAI.getGenerativeModel({ model: 'gemini-3-flash-preview' })
 
     const chat = model.startChat({
       history: messages.slice(0, -1).map((m: any) => ({
@@ -73,6 +73,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ reply: text })
   } catch (e) {
     console.error("Chat API Error:", e)
-    return NextResponse.json({ reply: "Désolé, je rencontre des difficultés techniques. Vous pouvez nous écrire sur WhatsApp." }, { status: 500 })
+    return NextResponse.json({ reply: "Désolé, je rencontre des difficultés techniques. Vous pouvez nous écrire sur WhatsApp ou nous envoyer un mail." }, { status: 500 })
   }
 }

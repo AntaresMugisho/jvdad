@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { ChatMessage } from '@/lib/types'
 import { chatService } from '@/lib/services/chat'
 import { links } from '@/lib/config'
+import Markdown from 'react-markdown'
 
 const STORAGE_KEY = 'jvdad_chat_history_v1'
 
@@ -59,7 +60,7 @@ export default function ChatWidget() {
   const quick = [
     'Quels sont vos projets ?',
     'Comment vous contacter ?',
-    'Avez-vous des formations ?',
+    "Qui êtes-vous ?",
   ]
 
   return (
@@ -68,8 +69,7 @@ export default function ChatWidget() {
         <div className="mb-3 w-[92vw] max-w-md rounded-xl border border-slate-200 bg-white shadow-xl overflow-hidden">
           <header className="flex items-center justify-between bg-primary-600 px-4 py-3 text-white">
             <div className="flex items-center gap-2">
-              <span className="font-semibold">Assistant JVDAD</span>
-              <span className="text-xs opacity-90">type WhatsApp</span>
+              <span className="font-semibold">Assistant Virtuel JVDAD</span>
             </div>
             <button aria-label="Fermer" onClick={() => setOpen(false)} className="p-1 rounded hover:bg-primary-700">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5"><path d="M6.225 4.811 4.811 6.225 10.586 12l-5.775 5.775 1.414 1.414L12 13.414l5.775 5.775 1.414-1.414L13.414 12l5.775-5.775-1.414-1.414L12 10.586z" /></svg>
@@ -78,7 +78,7 @@ export default function ChatWidget() {
           <div className="max-h-80 overflow-y-auto p-3 space-y-3 bg-slate-50">
             {messages.map((m) => (
               <div key={m.id} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`${m.role === 'user' ? 'bg-primary-600 text-white' : 'bg-white border'} rounded-2xl px-3 py-2 max-w-[80%] text-sm whitespace-pre-wrap`}>{m.content}</div>
+                <div className={`${m.role === 'user' ? 'bg-primary-600 text-white' : 'bg-white border'} rounded-2xl px-3 py-2 max-w-[80%] text-sm whitespace-pre-wrap`}>{m.role === 'user' ? m.content : <Markdown>{m.content}</Markdown>}</div>
               </div>
             ))}
             {loading && (
