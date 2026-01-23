@@ -255,7 +255,7 @@ export default async function Page() {
                 icon={FaUsers}
                 value="1,500+"
                 label="Agriculteurs formés"
-                color="#fff"
+                color="var(--primary-green)"
               />
             </SectionWrapper>
             <SectionWrapper delay={0.2}>
@@ -263,7 +263,7 @@ export default async function Page() {
                 icon={FaSeedling}
                 value="2,300"
                 label="Hectares gérés durablement"
-                color="#fff"
+                color="var(--primary-green)"
               />
             </SectionWrapper>
             <SectionWrapper delay={0.3}>
@@ -271,7 +271,7 @@ export default async function Page() {
                 icon={FaHandsHelping}
                 value="45"
                 label="Communautés servies"
-                color="#fff"
+                color="var(--primary-green)"
               />
             </SectionWrapper>
             <SectionWrapper delay={0.4}>
@@ -279,7 +279,7 @@ export default async function Page() {
                 icon={FaChartLine}
                 value="40%"
                 label="Augmentation moyenne des rendements"
-                color="#fff"
+                color="var(--primary-green)"
               />
             </SectionWrapper>
           </div>
@@ -454,8 +454,15 @@ export default async function Page() {
             </SectionWrapper>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Contact Info */}
+              {/* Contact Form */}
               <SectionWrapper delay={0.1}>
+                <div className="bg-white rounded-xl p-6 shadow-xl">
+                  <ContactForm />
+                </div>
+              </SectionWrapper>
+
+              {/* Contact Info */}
+              <SectionWrapper delay={0.2}>
                 <div className="space-y-6">
                   <div>
                     <h3 className="text-xl font-semibold mb-4">JVDAD</h3>
@@ -498,13 +505,6 @@ export default async function Page() {
                       Nous répondons généralement sous 24-48 heures
                     </p>
                   </div>
-                </div>
-              </SectionWrapper>
-
-              {/* Contact Form */}
-              <SectionWrapper delay={0.2}>
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-                  <ContactForm variant="footer" />
                 </div>
               </SectionWrapper>
             </div>
