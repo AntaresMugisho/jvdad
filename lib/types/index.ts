@@ -23,6 +23,7 @@ export interface Post {
   image: string
   tags: string[]
   author?: string
+  content?: string
 }
 
 export interface GalleryImage {
