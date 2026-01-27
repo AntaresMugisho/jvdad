@@ -47,8 +47,8 @@ export default function BlogSlider({ posts }: BlogSliderProps) {
         }
 
         .blog-slider-container .swiper {
-          padding-bottom: 0 !important;
-          overflow: visible !important;
+          padding-bottom: 40px !important;
+          margin-bottom: 0 !important;
         }
 
         .blog-slider-container .swiper-wrapper {
@@ -65,7 +65,7 @@ export default function BlogSlider({ posts }: BlogSliderProps) {
           border-radius: 50%;
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
           top: auto;
-          bottom: -12px;
+          bottom: 28px;
           transition: all 0.3s ease;
         }
 
