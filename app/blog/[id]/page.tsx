@@ -29,8 +29,8 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ id:
         .filter(p => p.id !== post.id && p.tags.some(tag => post.tags.includes(tag)))
         .slice(0, 3)
 
-    const shareUrl = typeof window !== 'undefined' ? window.location.href : ''
-    const shareText = `${post.title} - JVDAD`
+    const shareText = "Cet artcle posté sur le site de JVDAD pourrait vous intérersser.\n"
+    const shareUrl = typeof window !== 'undefined' ? window.location.href : 'https://jvdad.vercel.app/blog/' + post.id
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -111,7 +111,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ id:
                         <h3 className="text-lg font-semibold mb-4 text-gray-900">Partager cet article</h3>
                         <div className="flex flex-wrap gap-3">
                             <a
-                                href={`https://wa.me/?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`}
+                                href={`https://wa.me/?text=${encodeURIComponent(shareText + shareUrl)}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors"
@@ -120,7 +120,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ id:
                                 WhatsApp
                             </a>
                             <a
-                                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
+                                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareText + shareUrl)}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
