@@ -9,6 +9,9 @@ export const contentService = {
   async getProjects(): Promise<Project[]> {
     return projects
   },
+  async getProjectById(id: string): Promise<Project | undefined> {
+    return projects.find(project => project.id === id)
+  },
   async getPosts(): Promise<Post[]> {
     return posts
   },

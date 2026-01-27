@@ -6,15 +6,17 @@ import PostCard from '@/components/cards/PostCard'
 import BlockRenderer from '@/components/BlockRenderer'
 import { FaArrowLeft, FaCalendar, FaUser, FaWhatsapp, FaFacebook, FaTwitter } from 'react-icons/fa'
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
-    const post = await contentService.getPostById(params.id)
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params
+    const post = await contentService.getPostById(id)
     if (!post) return { title: 'Article non trouvé' }
     return { title: `${post.title} · JVDAD Blog` }
 }
 
-export default async function BlogDetailPage({ params }: { params: { id: string } }) {
+export default async function BlogDetailPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params
     const [post, allPosts] = await Promise.all([
-        contentService.getPostById(params.id),
+        contentService.getPostById(id),
         contentService.getPosts(),
     ])
 

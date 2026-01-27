@@ -7,6 +7,7 @@ import ImageCard from '@/components/cards/ImageCard'
 import TestimonialCard from '@/components/cards/TestimonialCard'
 import StatCard from '@/components/cards/StatCard'
 import ContactForm from '@/components/ContactForm'
+import BlogSlider from '@/components/BlogSlider'
 import Link from 'next/link'
 import Image from 'next/image'
 import { contentService } from '@/lib/services/content'
@@ -431,13 +432,7 @@ export default async function Page() {
 
       {/* Blog Section */}
       <Section title="Articles" description="Actualités, conseils et retours d'expérience.">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {posts.slice(0, 3).map((b) => (
-            <SectionWrapper key={b.id}>
-              <PostCard post={b} />
-            </SectionWrapper>
-          ))}
-        </div>
+        <BlogSlider posts={posts.slice(0, 6)} />
         <div className="mt-6">
           <Link href="/blog" className="text-sm font-medium text-primary-700 hover:text-primary-800">Voir tous les articles →</Link>
         </div>
