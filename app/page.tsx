@@ -25,6 +25,25 @@ export default async function Page() {
     <>
       <Hero />
 
+      <SectionWrapper>
+        <section className="py-16 relative bg-gradient-to-br from-[var(--primary-green)] to-[var(--primary-green-dark)] text-white">
+          <div className="container mx-auto px-4 max-w-7xl">
+            <div className="max-w-3xl">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-[var(--accent-yellow)] font-semibold"> - JVDAD - </span>
+              </div>
+              <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                Jeunes Visionnaires pour le Développement et l'Agriculture Durable
+              </h1>
+            </div>
+          </div>
+          {/* Decorative elements */}
+          <div className="absolute bottom-0 right-0 opacity-10">
+            <FaSeedling className="text-[30rem]" />
+          </div>
+        </section>
+      </SectionWrapper>
+
       {/* Mission & Goals Section */}
       <section className="py-16 bg-white overflow-hidden">
         <div className="container mx-auto px-4">
