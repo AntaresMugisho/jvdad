@@ -1,6 +1,6 @@
 import Container from '@/components/ui/Container'
 import ContactForm from '@/components/ContactForm'
-import { links } from '@/lib/config'
+import { links, org } from '@/lib/config'
 
 export const metadata = { title: 'Contact · JVDAD' }
 
@@ -33,8 +33,7 @@ export default function Page() {
               <h3 className="font-semibold text-slate-900 text-lg mb-2">Adresse</h3>
               <p className="text-slate-600">
                 Siège JVDAD<br />
-                Sud-Kivu & Nord-Kivu<br />
-                République Démocratique du Congo
+                {org.address}
               </p>
             </div>
           </div>

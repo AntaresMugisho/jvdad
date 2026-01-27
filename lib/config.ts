@@ -1,6 +1,7 @@
 export const org = {
   name: 'JVDAD',
   tagline: "Agriculture durable, innovation et communauté",
+  address: "Province de l’Ituri, territoire d’Irumu, chefferie des ANDISSOMA, centre de NYANKUNDE\n\nRépublique Démocratique du Congo"
 }
 
 // A adapter avec votre numéro officiel (format international, sans '+').

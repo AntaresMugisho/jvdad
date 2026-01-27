@@ -11,7 +11,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { contentService } from '@/lib/services/content'
 import { FaLeaf, FaUsers, FaSeedling, FaHandsHelping, FaArrowRight, FaTractor, FaGraduationCap, FaChartLine, FaWater, FaCheck, FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa'
-
+import { org } from '@/lib/config'
 
 export default async function Page() {
   const [projects, posts, images, testimonials] = await Promise.all([
@@ -474,8 +474,7 @@ export default async function Page() {
                   <div>
                     <h4 className="font-semibold mb-2">Nos Bureaux</h4>
                     <p className="text-green-100">
-                      Province de l’Ituri, territoire d’Irumu, chefferie des ANDISSOMA, centre de NYANKUNDE<br />
-                      République Démocratique du Congo
+                      {org.address}
                     </p>
                   </div>
 

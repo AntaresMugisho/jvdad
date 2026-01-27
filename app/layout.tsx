@@ -9,7 +9,7 @@ import { org } from '@/lib/config'
 export const metadata: Metadata = {
   title: `${org.name} · JVDAD Asbl`,
   description: org.tagline,
-  icons: { icon: '/logo.svg' },
+  icons: { icon: '/images/logo.jpeg' },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
