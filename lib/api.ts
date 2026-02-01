@@ -1,0 +1,151 @@
+
+import axios, { AxiosError } from "axios";
+
+// const BASE_API_URL = "http://192.168.166.150:8000/api/v1";
+const BASE_API_URL = "https://tajirika.onrender.com/api/v1";
+
+const api = axios.create({
+  baseURL: BASE_API_URL,
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
+});
+
+// Axios interceptors config
+//--------------------------------------------------------------------------------
+api.interceptors.request.use(
+  async (config) => {
+    const { tokenStorage } = await import("@/stores/token-store");
+
+    // Get fresh access token
+    const accessToken = await tokenStorage.getAccessToken();
+
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+
+    return config;
+  },
+  (error) => {
+    logger.error("Request interceptor error", error);
+    return Promise.reject(error);
+  },
+);
+
+const throwError = (err: AxiosError) => {
+  logger.error(err);
+  let errorData = (err.response?.data as any)?.object;
+  if (!errorData) {
+    errorData = err.response?.data;
+  }
+
+  throw {
+    code: errorData?.response_code,
+    message: errorData?.response_message,
+    data: { ...errorData?.response_data, code: errorData?.response_code },
+  };
+};
+
+// REST APIs
+//-----------------------------------------------------------------------------------------
+
+// AUTHENTICATION
+export const authApi = {
+  register: (
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string,
+    password2: string,
+  ) =>
+    api
+      .post("/auth/register/", {
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        password,
+        password2,
+        username: email,
+      })
+      .then((response) => response.data)
+      .catch((error) => throwError(error)),
+
+  login: (email: string, password: string) =>
+    api
+      .post("auth/login/", { email, password })
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => throwError(error)),
+
+  tokenRefresh: (refresh: string) =>
+    api
+      .post("/auth/token/refresh", { refresh })
+      .then((response) => response.data)
+      .catch((error) => throwError(error)),
+
+  tokenVerify: (token: string) =>
+    api
+      .post("auth/token/verify", { token })
+      .then((response) => response.data)
+      .catch((error) => throwError(error)),
+
+  tokenInvalidate: () =>
+    api
+      .post("/auth/token/invalidate")
+      .then((response) => response.data)
+      .catch((error) => throwError(error)),
+
+  me: () =>
+    api
+      .get("auth/me/")
+      .then((response) => response.data)
+      .catch((error) => throwError(error)),
+
+  logout: () =>
+    api
+      .post("/auth/logout/")
+      .then((response) => response.data)
+      .catch((error) => throwError(error)),
+
+  verifyOTP: (code: string, email: string) =>
+    api
+      .post("/auth/otp/verify/", { code, email })
+      .then((response) => response.data)
+      .catch((error) => throwError(error)),
+
+  resendOTP: (email: string) =>
+    api
+      .post("/auth/otp/resend/", { email })
+      .then((response) => response.data)
+      .catch((error) => throwError(error)),
+};
+
+// Blog 
+export const blogAPI = {
+  list: () =>
+    api
+      .get("/blog/posts/")
+      .then((response) => response.data)
+      .catch((error) => throwError(error)),
+  detail: (slug: string) => api.get(`/blog/posts/${slug}/`),
+  create: (title: string, content: string, excerpt: string, category_id: number) =>
+    api.post("/blog/posts/", { title, content, excerpt, category_id }),
+  update: (slug: string, data: any) => api.patch(`/blog/posts/${slug}/`, data),
+  delete: (slug: string) => api.delete(`/blog/posts/${slug}/`),
+
+
+  blogCategories: {
+    list: () =>
+      api
+        .get("/blog/categories/")
+        .then((response) => response.data)
+        .catch((error) => throwError(error)),
+    detail: (id: number) => api.get(`/blog/categories/${id}/`),
+    create: (name: string) => api.post("/blog/categories/", { name }),
+    update: (id: number, data: any) => api.patch(`/blog/categories/${id}/`, data),
+    delete: (id: number) => api.delete(`/blog/categories/${id}/`),
+  },
+};
+
