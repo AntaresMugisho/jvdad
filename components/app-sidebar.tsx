@@ -1,6 +1,6 @@
 "use client";
 
-import { FileText, FolderOpen, Shield, User, Home, LogOut } from "lucide-react";
+import { FileText, FolderOpen, Shield, User, Home, LogOut, Building2, Quote } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuthStore } from "@/lib/auth-store";
@@ -41,6 +41,16 @@ const menuItems = [
     icon: User,
   },
   {
+    title: "Information",
+    url: "/company",
+    icon: Building2,
+  },
+  {
+    title: "Témoignages",
+    url: "/testimonials",
+    icon: Quote,
+  },
+  {
     title: "Sécurité",
     url: "/securite",
     icon: Shield,
@@ -74,7 +84,7 @@ export function AppSidebar() {
                     isActive={pathname === item.url}
                     data-testid={`link-${item.title.toLowerCase().replace(/\s+/g, '-')}`}
                   >
-                    <Link href={item.url}>
+                    <Link href={item.url as any}>
                       <item.icon className="h-4 w-4" />
                       <span>{item.title}</span>
                     </Link>

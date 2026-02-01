@@ -5,8 +5,14 @@ import Image from 'next/image'
 import Container from '@/components/ui/Container'
 import { org } from '@/lib/config'
 import { motion } from 'framer-motion'
+import { Post } from '@/lib/types'
+import BlogSlider from '@/components/BlogSlider'
 
-export default function Hero() {
+interface HeroProps {
+  posts: Post[]
+}
+
+export default function Hero({ posts }: HeroProps) {
   return (
     <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-gradient-to-br from-green-50 to-white">
       {/* Background Pattern */}
@@ -58,17 +64,25 @@ export default function Hero() {
 
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="w-full"
           >
             <div className="relative">
-              <div className="bg-white rounded-2xl shadow-2xl p-8 transform rotate-3 hover:rotate-0 transition-transform duration-300">
-                <img src="/images/hero-bg.png" alt="Champs de maïs" className="w-full h-64 object-cover rounded-lg mb-4" />
-                <div className="text-center">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Ensemble</h3>
-                  <p className="text-gray-600">Pratiquons une agriculture en équilibre avec l’environnement !</p>
+              <div className="bg-white rounded-2xl shadow-2xl p-4 md:p-8 transform rotate-1 hover:rotate-0 transition-transform duration-300">
+                <div className="mb-4">
+                  <h3 className="text-xl font-bold text-gray-900 border-l-4 border-[var(--primary-green)] pl-3 mb-2">
+                    Dernières Actualités
+                  </h3>
+                  <p className="text-sm text-gray-600">Découvrez nos activités récentes sur le terrain.</p>
                 </div>
+                <BlogSlider posts={posts} />
               </div>
+
+              {/* Decorative background element */}
+              <div className="absolute -z-10 -top-6 -right-6 w-full h-full border-2 border-green-100 rounded-2xl hidden md:block"></div>
+              <div className="absolute -z-10 -bottom-6 -left-6 w-full h-full border-2 border-green-100 rounded-2xl hidden md:block"></div>
             </div>
           </motion.div>
         </div>

@@ -12,7 +12,8 @@ import { Upload } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface ProfileData {
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   organization: string;
   bio: string;
@@ -25,7 +26,8 @@ export default function Profile() {
     return saved
       ? JSON.parse(saved)
       : {
-        name: "Jean Dupont",
+        firstName: "Jean",
+        lastName: "Dupont",
         email: "jean.dupont@asbl.org",
         organization: "ASBL Example",
         bio: "Administrateur de l'ASBL",
@@ -53,11 +55,7 @@ export default function Profile() {
   };
 
   const getInitials = () => {
-    return profile.name
-      .split(" ")
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase();
+    return `${profile.firstName.charAt(0)}${profile.lastName.charAt(0)}`.toUpperCase();
   };
 
   return (
@@ -99,31 +97,44 @@ export default function Profile() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="name">Nom complet *</Label>
+              <Label htmlFor="firstName">Prénom *</Label>
               <Input
-                id="name"
-                value={profile.name}
+                id="firstName"
+                value={profile.firstName}
                 onChange={(e) =>
-                  setProfile({ ...profile, name: e.target.value })
+                  setProfile({ ...profile, firstName: e.target.value })
                 }
                 required
-                data-testid="input-name"
+                data-testid="input-firstname"
               />
             </div>
 
             <div>
-              <Label htmlFor="email">Email *</Label>
+              <Label htmlFor="lastName">Nom *</Label>
               <Input
-                id="email"
-                type="email"
-                value={profile.email}
+                id="lastName"
+                value={profile.lastName}
                 onChange={(e) =>
-                  setProfile({ ...profile, email: e.target.value })
+                  setProfile({ ...profile, lastName: e.target.value })
                 }
                 required
-                data-testid="input-email"
+                data-testid="input-lastname"
               />
             </div>
+          </div>
+
+          <div>
+            <Label htmlFor="email">Email *</Label>
+            <Input
+              id="email"
+              type="email"
+              value={profile.email}
+              onChange={(e) =>
+                setProfile({ ...profile, email: e.target.value })
+              }
+              required
+              data-testid="input-email"
+            />
           </div>
 
           <div>

@@ -24,7 +24,7 @@ export default async function Page() {
 
   return (
     <>
-      <Hero />
+      <Hero posts={posts.slice(0, 5)} />
 
       <SectionWrapper>
         <section className="py-16 relative bg-gradient-to-br from-[var(--primary-green)] to-[var(--primary-green-dark)] text-white">
