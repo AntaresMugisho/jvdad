@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { persist, createJSONStorage } from 'zustand/middleware'
+import { dashboardApi } from '@/lib/api'
 
 export interface DashboardStats {
     totalProjects: number
@@ -20,34 +20,45 @@ interface DashboardState {
     stats: DashboardStats
     recentActivity: RecentActivity[]
     isLoading: boolean
+    error?: string | null
     fetchData: () => Promise<void>
 }
 
-export const useDashboardStore = create<DashboardState>()(
-    persist(
-        (set) => ({
-            stats: {
-                totalProjects: 12,
-                activeProjects: 5,
-                beneficiaries: 1500,
-                totalBudget: 45000,
-            },
-            recentActivity: [
-                { id: '1', type: 'project', action: 'Nouveau projet créé', target: 'Agroforesterie Sud-Kivu', date: new Date().toISOString() },
-                { id: '2', type: 'user', action: 'Nouvel utilisateur', target: 'Jean Mulamba', date: new Date(Date.now() - 86400000).toISOString() },
-                { id: '3', type: 'post', action: 'Article publié', target: 'Techniques de compostage', date: new Date(Date.now() - 172800000).toISOString() },
-            ],
-            isLoading: false,
-            fetchData: async () => {
-                set({ isLoading: true })
-                // Simulate API call
-                await new Promise((resolve) => setTimeout(resolve, 1000))
-                set({ isLoading: false })
-            },
-        }),
-        {
-            name: 'jvdad-dashboard-storage',
-            storage: createJSONStorage(() => localStorage),
+export const useDashboardStore = create<DashboardState>((set) => ({
+    stats: {
+        totalProjects: 0,
+        activeProjects: 0,
+        beneficiaries: 0,
+        totalBudget: 0,
+    },
+    recentActivity: [],
+    isLoading: false,
+    error: null,
+    fetchData: async () => {
+        set({ isLoading: true, error: null })
+        try {
+            const data = await dashboardApi.overview()
+            set({
+                stats: {
+                    totalProjects: data?.total_projects ?? 0,
+                    activeProjects: data?.active_projects ?? 0,
+                    beneficiaries: data?.total_beneficiaries ?? 0,
+                    totalBudget: data?.total_budget ?? 0,
+                },
+                recentActivity: Array.isArray(data?.recent_activity)
+                    ? data.recent_activity.map((activity: any, index: number) => ({
+                        id: String(activity?.id ?? index),
+                        type: (activity?.type ?? 'project') as RecentActivity['type'],
+                        action: activity?.action ?? activity?.description ?? 'Activité',
+                        target: activity?.target ?? activity?.title ?? 'N/A',
+                        date: activity?.date ?? new Date().toISOString(),
+                    }))
+                    : [],
+                isLoading: false,
+            })
+        } catch (error) {
+            console.error('Failed to load dashboard overview', error)
+            set({ error: 'Impossible de charger les données du tableau de bord.', isLoading: false })
         }
-    )
-)
+    },
+}))

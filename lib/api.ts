@@ -2,9 +2,9 @@
 import axios, { AxiosError } from "axios";
 
 // const BASE_API_URL = "http://192.168.166.150:8000/api/v1";
-const BASE_API_URL = "https://tajirika.onrender.com/api/v1";
+const BASE_API_URL = "http://localhost:8000/api/v1";
 
-const api = axios.create({
+export const api = axios.create({
   baseURL: BASE_API_URL,
   headers: {
     "Content-Type": "application/json",
@@ -28,13 +28,13 @@ api.interceptors.request.use(
     return config;
   },
   (error) => {
-    logger.error("Request interceptor error", error);
+    console.error("Request interceptor error", error);
     return Promise.reject(error);
   },
 );
 
 const throwError = (err: AxiosError) => {
-  logger.error(err);
+  console.error(err);
   let errorData = (err.response?.data as any)?.object;
   if (!errorData) {
     errorData = err.response?.data;
@@ -147,5 +147,46 @@ export const blogAPI = {
     update: (id: number, data: any) => api.patch(`/blog/categories/${id}/`, data),
     delete: (id: number) => api.delete(`/blog/categories/${id}/`),
   },
+};
+
+// Dashboard
+export const dashboardApi = {
+  overview: () =>
+    api
+      .get("/dashboard/overview/")
+      .then((response) => response.data)
+      .catch((error) => throwError(error)),
+};
+
+// Projects
+export const projectsApi = {
+  list: () =>
+    api
+      .get("/website/projects/")
+      .then((response) => response.data)
+      .catch((error) => throwError(error)),
+  detail: (id: string | number) =>
+    api
+      .get(`/website/projects/${id}/`)
+      .then((response) => response.data)
+      .catch((error) => throwError(error)),
+};
+
+// Gallery
+export const galleryApi = {
+  list: () =>
+    api
+      .get("/website/gallery/")
+      .then((response) => response.data)
+      .catch((error) => throwError(error)),
+};
+
+// Testimonials
+export const testimonialsApi = {
+  list: () =>
+    api
+      .get("/website/testimonials/")
+      .then((response) => response.data)
+      .catch((error) => throwError(error)),
 };
 

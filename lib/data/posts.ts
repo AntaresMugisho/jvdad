@@ -24,6 +24,7 @@ export const posts: Post[] = [
       { type: 'paragraph', data: { text: "L'agroécologie n'est pas un retour en arrière, mais un bond en avant vers une agriculture qui nourrit sans détruire." } }
     ],
   },
+  
   {
     id: 'b2',
     title: 'Optimiser l’eau à la parcelle',
