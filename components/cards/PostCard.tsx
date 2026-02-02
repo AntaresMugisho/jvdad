@@ -3,9 +3,9 @@ import Link from 'next/link'
 import { Post } from '@/lib/types'
 
 export default function PostCard({ post }: { post: Post }) {
-  const date = new Date(post.date)
+  const date = new Date(post.created_at)
   return (
-    <Link href={`/blog/${post.id}` as any} className="block">
+    <Link href={`/blog/${post.slug}` as any} className="block">
       <article className="card overflow-hidden hover:shadow-lg transition-shadow">
         <div className="relative aspect-[16/9]">
           <Image src={post.image} alt={post.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />

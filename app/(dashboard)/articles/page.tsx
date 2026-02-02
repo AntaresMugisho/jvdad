@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { blogStorage, BlogPost } from "@/lib/blog-storage";
 import { BlogCard } from "@/components/blog-card";
 import { BlogForm } from "@/components/blog-form";
 import { Button } from "@/components/ui/button";
@@ -19,14 +18,15 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
+import { Post } from "@/lib/types";
 
 const POSTS_PER_PAGE = 6;
 
 export default function Blog() {
-  const [posts, setPosts] = useState(blogStorage.getPosts());
+  const [posts, setPosts] = useState<Post[]>([]);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showForm, setShowForm] = useState(false);
-  const [editingPost, setEditingPost] = useState<BlogPost | undefined>();
+  const [editingPost, setEditingPost] = useState<Post | undefined>();
   const [deletePostSlug, setDeletePostSlug] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const { toast } = useToast();
@@ -35,7 +35,7 @@ export default function Blog() {
   const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
   const paginatedPosts = posts.slice(startIndex, startIndex + POSTS_PER_PAGE);
 
-    useEffect(()=> {
+  useEffect(()=> {
     blogAPI.posts.list()
       .then((posts) => {
         setPosts(posts)
@@ -43,7 +43,7 @@ export default function Blog() {
   }, [deletePostSlug, editingPost])
 
 
-  const handleSubmit = async (data: Omit<BlogPost, "id" | "createdAt" | "updatedAt">) => {
+  const handleSubmit = async (data: Omit<Post, "id" | "createdAt" | "updatedAt">) => {
 
 
     if (editingPost) {
@@ -54,7 +54,6 @@ export default function Blog() {
       await blogAPI.posts.create(data);
       toast({ title: "Article publié avec succès" });
     }
-    setPosts(blogStorage.getPosts());
     setShowForm(false);
     setEditingPost(undefined);
     setCurrentPage(1);

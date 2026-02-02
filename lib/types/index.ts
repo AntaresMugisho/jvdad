@@ -19,9 +19,10 @@ export interface Post {
   id: string
   title: string
   excerpt: string
-  date: string
+  created_at: string
   image: string
   tags: string[]
+  slug: string
   author?: string
   content?: any[] // EditorJS blocks
 }

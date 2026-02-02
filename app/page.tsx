@@ -10,16 +10,16 @@ import ContactForm from '@/components/ContactForm'
 import BlogSlider from '@/components/BlogSlider'
 import Link from 'next/link'
 import Image from 'next/image'
-import { contentService } from '@/lib/services/content'
 import { FaLeaf, FaUsers, FaSeedling, FaHandsHelping, FaArrowRight, FaTractor, FaGraduationCap, FaChartLine, FaWater, FaCheck, FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa'
 import { org } from '@/lib/config'
+import { blogAPI, projectsApi, testimonialsApi, galleryApi } from '@/lib/api'
 
 export default async function Page() {
   const [projects, posts, images, testimonials] = await Promise.all([
-    contentService.getProjects(),
-    contentService.getPosts(),
-    contentService.getGallery(),
-    contentService.getTestimonials(),
+    projectsApi.list(),
+    blogAPI.posts.list(),
+    galleryApi.list(),
+    testimonialsApi.list(),
   ])
 
   return (

@@ -1,23 +1,24 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import { contentService } from '@/lib/services/content'
 import PostCard from '@/components/cards/PostCard'
 import BlockRenderer from '@/components/BlockRenderer'
 import { FaArrowLeft, FaCalendar, FaUser, FaWhatsapp, FaFacebook, FaTwitter } from 'react-icons/fa'
+import { blogAPI } from '@/lib/api'
+import { Post } from '@/lib/types'
 
-export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
-    const { id } = await params
-    const post = await contentService.getPostById(id)
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params
+    const post: Post = await blogAPI.posts.detail(slug)
     if (!post) return { title: 'Article non trouvé' }
     return { title: `${post.title} · JVDAD Blog` }
 }
 
-export default async function BlogDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function BlogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
     const { id } = await params
     const [post, allPosts] = await Promise.all([
-        contentService.getPostById(id),
-        contentService.getPosts(),
+        blogAPI.posts.detail(slug),
+        blogAPI.posts.list(),
     ])
 
     if (!post) {
@@ -26,7 +27,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ id:
 
     // Get related posts (exclude current post, limit to 3)
     const relatedPosts = allPosts
-        .filter(p => p.id !== post.id && p.tags.some(tag => post.tags.includes(tag)))
+        .filter(p => p.id !== post.id && p.tags.some(tag => post.tags?.includes(tag)))
         .slice(0, 3)
 
     const shareText = "Cet artcle posté sur le site de JVDAD pourrait vous intérersser.\n"
