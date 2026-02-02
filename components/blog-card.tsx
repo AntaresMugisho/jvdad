@@ -9,7 +9,7 @@ interface BlogCardProps {
   post: BlogPost;
   viewMode: "grid" | "list";
   onEdit?: (post: BlogPost) => void;
-  onDelete?: (id: string) => void;
+  onDelete?: (slug: string) => void;
 }
 
 export function BlogCard({ post, viewMode, onEdit, onDelete }: BlogCardProps) {
@@ -17,9 +17,9 @@ export function BlogCard({ post, viewMode, onEdit, onDelete }: BlogCardProps) {
     return (
       <Card className="overflow-hidden hover-elevate  max-w-3xl">
         <div className="aspect-video relative">
-          {post.coverImage ? (
+          {post.image ? (
             <img
-              src={post.coverImage}
+              src={post.image}
               alt={post.title}
               className="w-full h-full object-cover"
             />
@@ -37,7 +37,7 @@ export function BlogCard({ post, viewMode, onEdit, onDelete }: BlogCardProps) {
             {post.excerpt}
           </p>
           <div className="flex flex-wrap gap-2">
-            {post.tags.map((tag, idx) => (
+            {post.tags?.map((tag, idx) => (
               <Badge key={idx} variant="secondary" data-testid={`badge-tag-${post.id}-${idx}`}>
                 {tag}
               </Badge>
@@ -46,22 +46,22 @@ export function BlogCard({ post, viewMode, onEdit, onDelete }: BlogCardProps) {
           <div className="flex items-center justify-between pt-2">
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <Calendar className="h-3 w-3" />
-              <span>{new Date(post.createdAt).toLocaleDateString("fr-FR")}</span>
+              <span>{new Date(post.created_at).toLocaleDateString("fr-FR")}</span>
             </div>
             <div className="flex gap-1">
               <Button
                 size="sm"
                 variant="ghost"
                 onClick={() => onEdit?.(post)}
-                data-testid={`button-edit-${post.id}`}
+                data-testslug={`button-edit-${post.slug}`}
               >
                 <Edit className="h-4 w-4" />
               </Button>
               <Button
                 size="sm"
                 variant="ghost"
-                onClick={() => onDelete?.(post.id)}
-                data-testid={`button-delete-${post.id}`}
+                onClick={() => onDelete?.(post.slug)}
+                data-testslug={`button-delete-${post.slug}`}
               >
                 <Trash2 className="h-4 w-4" />
               </Button>
@@ -76,9 +76,9 @@ export function BlogCard({ post, viewMode, onEdit, onDelete }: BlogCardProps) {
     <Card className="p-4 hover-elevate">
       <div className="flex gap-4">
         <div className="w-32 h-32 flex-shrink-0">
-          {post.coverImage ? (
+          {post.image ? (
             <img
-              src={post.coverImage}
+              src={post.image}
               alt={post.title}
               className="w-full h-full object-cover rounded-md"
             />
@@ -96,7 +96,7 @@ export function BlogCard({ post, viewMode, onEdit, onDelete }: BlogCardProps) {
             {post.excerpt}
           </p>
           <div className="flex flex-wrap gap-2">
-            {post.tags.map((tag, idx) => (
+            {post.tags?.map((tag, idx) => (
               <Badge key={idx} variant="secondary" data-testid={`badge-tag-${post.id}-${idx}`}>
                 {tag}
               </Badge>
@@ -104,7 +104,7 @@ export function BlogCard({ post, viewMode, onEdit, onDelete }: BlogCardProps) {
           </div>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <Calendar className="h-3 w-3" />
-            <span>{new Date(post.createdAt).toLocaleDateString("fr-FR")}</span>
+            <span>{new Date(post.created_at).toLocaleDateString("fr-FR")}</span>
           </div>
         </div>
         <div className="flex flex-col gap-1">
@@ -112,15 +112,15 @@ export function BlogCard({ post, viewMode, onEdit, onDelete }: BlogCardProps) {
             size="sm"
             variant="ghost"
             onClick={() => onEdit?.(post)}
-            data-testid={`button-edit-${post.id}`}
+            data-testslug={`button-edit-${post.slug}`}
           >
             <Edit className="h-4 w-4" />
           </Button>
           <Button
             size="sm"
             variant="ghost"
-            onClick={() => onDelete?.(post.id)}
-            data-testid={`button-delete-${post.id}`}
+            onClick={() => onDelete?.(post.slug)}
+            data-testslug={`button-delete-${post.slug}`}
           >
             <Trash2 className="h-4 w-4" />
           </Button>

@@ -14,7 +14,7 @@ import { Lock } from "lucide-react";
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, isAuthenticated } = useAuthStore();
+  const { login, isAuthenticated, isLoading } = useAuthStore();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -24,20 +24,22 @@ export default function LoginPage() {
     }
   }, [isAuthenticated, router]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Mock login: accept any non-empty email/password
-    if (email && password) {
-      login(email);
+
+    const result = await login(email, password);
+
+    if (result.success) {
       toast({ title: "Connexion réussie" });
       router.push("/dashboard");
-    } else {
-      toast({
-        title: "Erreur de connexion",
-        description: "Veuillez entrer une adresse email et un mot de passe",
-        variant: "destructive",
-      });
+      return;
     }
+
+    toast({
+      title: "Erreur de connexion",
+      description: result.error ?? "Identifiants incorrects",
+      variant: "destructive",
+    });
   };
 
   return (
@@ -47,7 +49,7 @@ export default function LoginPage() {
           <div className="h-12 w-12 rounded-full bg-primary flex items-center justify-center mb-4">
             <Lock className="h-6 w-6 text-primary-foreground" />
           </div>
-          <h1 className="text-2xl font-semibold">JVDAD Dashboard</h1>
+          <h1 className="text-2xl font-semibold">JVDAD</h1>
           <p className="text-sm text-muted-foreground mt-2">
             Connectez-vous pour accéder au tableau de bord
           </p>
@@ -80,13 +82,14 @@ export default function LoginPage() {
             />
           </div>
 
-          <Button type="submit" className="w-full" data-testid="button-login">
-            Se connecter
+          <Button
+            type="submit"
+            className="w-full"
+            data-testid="button-login"
+            disabled={isLoading}
+          >
+            {isLoading ? "Connexion..." : "Se connecter"}
           </Button>
-
-          <p className="text-xs text-center text-muted-foreground">
-            Entrez n'importe quelle adresse email valide et mot de passe pour vous connecter
-          </p>
         </form>
       </Card>
     </div>

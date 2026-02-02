@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useAuthStore } from '@/lib/auth-store'
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
-    const { isAuthenticated } = useAuthStore()
+    const { isAuthenticated, ensureSession, isCheckingAuth } = useAuthStore()
     const router = useRouter()
     const [mounted, setMounted] = useState(false)
 
@@ -14,15 +14,23 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
     }, [])
 
     useEffect(() => {
-        if (mounted && !isAuthenticated) {
+        if (mounted) {
+            ensureSession().catch((error) => {
+                console.error('Échec de la vérification de session', error)
+            })
+        }
+    }, [mounted, ensureSession])
+
+    useEffect(() => {
+        if (mounted && !isCheckingAuth && !isAuthenticated) {
             router.push('/login')
         }
-    }, [isAuthenticated, router, mounted])
+    }, [isAuthenticated, router, mounted, isCheckingAuth])
 
     // Prevent hydration mismatch and flash of protected content
     if (!mounted) return null
 
-    if (!isAuthenticated) {
+    if (!isAuthenticated || isCheckingAuth) {
         return null
     }
 

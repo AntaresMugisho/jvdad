@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { blogStorage, BlogPost } from "@/lib/blog-storage";
 import { BlogCard } from "@/components/blog-card";
 import { BlogForm } from "@/components/blog-form";
 import { Button } from "@/components/ui/button";
+import { blogAPI } from "@/lib/api";
 
 import { Plus, Grid, List, ChevronLeft, ChevronRight } from "lucide-react";
 import {
@@ -26,7 +27,7 @@ export default function Blog() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showForm, setShowForm] = useState(false);
   const [editingPost, setEditingPost] = useState<BlogPost | undefined>();
-  const [deletePostId, setDeletePostId] = useState<string | null>(null);
+  const [deletePostSlug, setDeletePostSlug] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const { toast } = useToast();
 
@@ -34,12 +35,23 @@ export default function Blog() {
   const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
   const paginatedPosts = posts.slice(startIndex, startIndex + POSTS_PER_PAGE);
 
-  const handleSubmit = (data: Omit<BlogPost, "id" | "createdAt" | "updatedAt">) => {
+    useEffect(()=> {
+    blogAPI.posts.list()
+      .then((posts) => {
+        setPosts(posts)
+      })
+  }, [deletePostSlug, editingPost])
+
+
+  const handleSubmit = async (data: Omit<BlogPost, "id" | "createdAt" | "updatedAt">) => {
+
+
     if (editingPost) {
-      blogStorage.updatePost(editingPost.id, data);
+      await blogAPI.posts.update(editingPost.slug, data);
       toast({ title: "Article mis à jour avec succès" });
-    } else {
-      blogStorage.createPost(data);
+    } 
+    else {
+      await blogAPI.posts.create(data);
       toast({ title: "Article publié avec succès" });
     }
     setPosts(blogStorage.getPosts());
@@ -48,11 +60,11 @@ export default function Blog() {
     setCurrentPage(1);
   };
 
-  const handleDelete = () => {
-    if (deletePostId) {
-      blogStorage.deletePost(deletePostId);
-      setPosts(blogStorage.getPosts());
-      setDeletePostId(null);
+  const handleDelete = async () => {
+    if (deletePostSlug) {
+      await blogAPI.posts.delete(deletePostSlug)
+      await blogAPI.posts.list().then(setPosts)
+      setDeletePostSlug(null);
       toast({ title: "Article supprimé" });
     }
   };
@@ -76,6 +88,7 @@ export default function Blog() {
       </div>
     );
   }
+
 
   return (
     <div className="space-y-6">
@@ -129,7 +142,7 @@ export default function Blog() {
                 post={post}
                 viewMode={viewMode}
                 onEdit={handleEdit}
-                onDelete={setDeletePostId}
+                onDelete={setDeletePostSlug}
               />
             ))}
           </div>
@@ -162,7 +175,7 @@ export default function Blog() {
         </>
       )}
 
-      <AlertDialog open={!!deletePostId} onOpenChange={() => setDeletePostId(null)}>
+      <AlertDialog open={!!deletePostSlug} onOpenChange={() => setDeletePostSlug(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>

@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     const isBusinessHours = hour >= 8 && hour < 17
 
     // Check if the user has written more than 5 messages
-    const isSpam = messages.length > 10
+    const isSpam = messages.length > 100
     if (isSpam) {
       return NextResponse.json({
         reply: "Désolé, vous avez écrit trop de messages. Veuillez contacter notre service client pour plus d'informations.\n\n[Ouvrir WhatsApp](${links.whatsapp})\n[Envoyer un mail](${links.mailto})" }, { status: 429 })

@@ -19,7 +19,7 @@ interface BlogFormProps {
 export function BlogForm({ post, onSubmit, onCancel }: BlogFormProps) {
   const [title, setTitle] = useState(post?.title || "");
   const [excerpt, setExcerpt] = useState(post?.excerpt || "");
-  const [coverImage, setCoverImage] = useState(post?.coverImage || "");
+  const [coverImage, setCoverImage] = useState(post?.image || "");
   const [tags, setTags] = useState<string[]>(post?.tags || []);
   const [tagInput, setTagInput] = useState("");
   const [content, setContent] = useState(post?.content || null);
@@ -37,7 +37,7 @@ export function BlogForm({ post, onSubmit, onCancel }: BlogFormProps) {
 
   const addTag = () => {
     if (tagInput.trim() && !tags.includes(tagInput.trim())) {
-      setTags([...tags, "#" + tagInput.trim()]);
+      setTags([...tags, tagInput.trim()]);
       setTagInput("");
     }
   };

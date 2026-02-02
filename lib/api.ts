@@ -47,8 +47,10 @@ const throwError = (err: AxiosError) => {
   };
 };
 
+
 // REST APIs
 //-----------------------------------------------------------------------------------------
+
 
 // AUTHENTICATION
 export const authApi = {
@@ -73,7 +75,7 @@ export const authApi = {
 
   login: (email: string, password: string) =>
     api
-      .post("auth/login/", { email, password })
+      .post("/auth/login/", { email: email, password: password })
       .then((response) => {
         return response.data;
       })
@@ -87,7 +89,7 @@ export const authApi = {
 
   tokenVerify: (token: string) =>
     api
-      .post("auth/token/verify", { token })
+      .post("/auth/token/verify", { token })
       .then((response) => response.data)
       .catch((error) => throwError(error)),
 
@@ -99,7 +101,7 @@ export const authApi = {
 
   me: () =>
     api
-      .get("auth/me/")
+      .get("/auth/me/")
       .then((response) => response.data)
       .catch((error) => throwError(error)),
 
@@ -124,17 +126,18 @@ export const authApi = {
 
 // Blog 
 export const blogAPI = {
-  list: () =>
-    api
-      .get("/blog/posts/")
-      .then((response) => response.data)
-      .catch((error) => throwError(error)),
-  detail: (slug: string) => api.get(`/blog/posts/${slug}/`),
-  create: (title: string, content: string, excerpt: string, category_id: number) =>
-    api.post("/blog/posts/", { title, content, excerpt, category_id }),
-  update: (slug: string, data: any) => api.patch(`/blog/posts/${slug}/`, data),
-  delete: (slug: string) => api.delete(`/blog/posts/${slug}/`),
-
+  posts: {
+    list: () =>
+      api
+        .get("/blog/posts/")
+        .then((response) => response.data)
+        .catch((error) => throwError(error)),
+    detail: (slug: string) => api.get(`/blog/posts/${slug}/`),
+    create: (data: any) =>
+      api.post("/blog/posts/", {...data, image: data.coverImage, category_id: 1}),
+    update: (slug: string, data: any) => api.patch(`/blog/posts/${slug}/`, data),
+    delete: (slug: string) => api.delete(`/blog/posts/${slug}/`),
+  },
 
   blogCategories: {
     list: () =>
@@ -165,6 +168,7 @@ export const projectsApi = {
       .get("/website/projects/")
       .then((response) => response.data)
       .catch((error) => throwError(error)),
+
   detail: (id: string | number) =>
     api
       .get(`/website/projects/${id}/`)

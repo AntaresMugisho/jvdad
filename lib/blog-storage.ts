@@ -1,12 +1,13 @@
 export interface BlogPost {
   id: string;
   title: string;
+  slug: string;
   excerpt: string;
-  coverImage: string;
+  image: string
   tags: string[];
   content: any;
-  createdAt: string;
-  updatedAt: string;
+  created_at: string;
+  updated_at: string;
 }
 
 const STORAGE_KEY = "asbl-blog-posts";
