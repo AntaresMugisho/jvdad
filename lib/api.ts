@@ -174,6 +174,10 @@ export const projectsApi = {
       .get(`/website/projects/${id}/`)
       .then((response) => response.data)
       .catch((error) => throwError(error)),
+
+  create: (data: any) => api.post("/website/projects/", data),
+  update: (id: string | number, data: any) => api.patch(`/website/projects/${id}/`, data),
+  delete: (id: string | number) => api.delete(`/website/projects/${id}/`),
 };
 
 // Gallery
@@ -183,6 +187,9 @@ export const galleryApi = {
       .get("/website/gallery/")
       .then((response) => response.data)
       .catch((error) => throwError(error)),
+  create: (data: any) => api.post("/website/gallery/", data),
+  update: (id: string | number, data: any) => api.patch(`/website/gallery/${id}/`, data),
+  delete: (id: string | number) => api.delete(`/website/gallery/${id}/`),
 };
 
 // Testimonials
@@ -192,5 +199,32 @@ export const testimonialsApi = {
       .get("/website/testimonials/")
       .then((response) => response.data)
       .catch((error) => throwError(error)),
+  create: (data: any) => api.post("/website/testimonials/", data),
+  update: (id: string | number, data: any) => api.patch(`/website/testimonials/${id}/`, data),
+  delete: (id: string | number) => api.delete(`/website/testimonials/${id}/`),
 };
 
+// Address
+export const addressApi = {
+  list: () =>
+    api
+      .get("/website/address/")
+      .then((response) => response.data)
+      .catch((error) => throwError(error)),
+  create: (data: any) => api.post("/website/address/", data),
+  update: (id: string | number, data: any) => api.patch(`/website/address/${id}/`, data),
+  delete: (id: string | number) => api.delete(`/website/address/${id}/`),
+};
+
+
+// Organisation
+export const organisationApi = {
+  list: () =>
+    api
+      .get("/website/organisation/")
+      .then((response) => response.data)
+      .catch((error) => throwError(error)),
+  create: (data: any) => api.post("/website/organisation/", data),
+  update: (id: string | number, data: any) => api.patch(`/website/organisation/${id}/`, data),
+  delete: (id: string | number) => api.delete(`/website/organisation/${id}/`),
+};
