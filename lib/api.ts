@@ -1,8 +1,7 @@
 
 import axios, { AxiosError, type AxiosRequestConfig } from "axios";
 
-// const BASE_API_URL = "http://192.168.166.150:8000/api/v1";
-const BASE_API_URL = "http://localhost:8000/api/v1";
+const BASE_API_URL = "https://api.jvdad.org/api/v1"
 
 export const api = axios.create({
   baseURL: BASE_API_URL,
