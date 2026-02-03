@@ -21,8 +21,6 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
         blogAPI.posts.list(),
     ])
 
-    console.log(post)
-
     if (!post) {
         notFound()
     }

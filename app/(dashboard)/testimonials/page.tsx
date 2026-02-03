@@ -129,7 +129,6 @@ export default function TestimonialsPage() {
     }
 
     const url = URL.createObjectURL(file);
-    console.log(url)
     setPreviewUrl(url);
     handleFieldChange("file", file);
   };

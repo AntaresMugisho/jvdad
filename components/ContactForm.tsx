@@ -57,7 +57,6 @@ export default function ContactForm({ variant = 'default' }: { variant?: 'defaul
 
         // Simulate API call
         setTimeout(() => {
-            console.log('Form submitted:', formData)
             setSubmitStatus('success')
             setIsSubmitting(false)
             // Reset form
