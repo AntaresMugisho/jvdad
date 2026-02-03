@@ -1,6 +1,6 @@
 "use client";
 
-import { FileText, FolderOpen, Shield, User, Home, LogOut, Building2, Quote } from "lucide-react";
+import { FileText, FolderOpen, Shield, User, Home, LogOut, Building2, Quote, Image as ImageIcon, Briefcase } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuthStore } from "@/lib/auth-store";
@@ -29,6 +29,16 @@ const menuItems = [
     title: "Blog",
     url: "/articles",
     icon: FileText,
+  },
+  {
+    title: "Galerie",
+    url: "/gallery",
+    icon: ImageIcon,
+  },
+  {
+    title: "Projets",
+    url: "/projects",
+    icon: Briefcase,
   },
   {
     title: "Fichiers",

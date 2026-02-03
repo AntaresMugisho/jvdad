@@ -2,38 +2,35 @@
 
 import { Card } from "@/components/ui/card";
 import { FileText, FolderOpen, TrendingUp, Users, DollarSign } from "lucide-react";
-import { useDashboardStore } from "@/lib/dashboard-store";
 import { useEffect } from "react";
 
 export default function Dashboard() {
-  const { stats, recentActivity, isLoading, fetchData } = useDashboardStore()
 
-  useEffect(() => {
-    fetchData()
-  }, [fetchData])
-
+  const isLoading = false;
+  const recentActivity = [];
+ 
   const statCards = [
     {
       label: "Projets Totaux",
-      value: stats.totalProjects,
+      value: 0,
       icon: FolderOpen,
       color: "text-blue-500",
     },
     {
       label: "Projets Actifs",
-      value: stats.activeProjects,
+      value: 0,
       icon: TrendingUp,
       color: "text-green-500",
     },
     {
       label: "Bénéficiaires",
-      value: stats.beneficiaries.toLocaleString(),
+      value: 0,
       icon: Users,
       color: "text-purple-500",
     },
     {
       label: "Budget Total",
-      value: `${stats.totalBudget.toLocaleString()} $`,
+      value: `${0} $`,
       icon: DollarSign,
       color: "text-yellow-500",
     },

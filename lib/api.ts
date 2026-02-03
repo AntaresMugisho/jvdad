@@ -1,5 +1,5 @@
 
-import axios, { AxiosError } from "axios";
+import axios, { AxiosError, type AxiosRequestConfig } from "axios";
 
 // const BASE_API_URL = "http://192.168.166.150:8000/api/v1";
 const BASE_API_URL = "http://localhost:8000/api/v1";
@@ -175,8 +175,9 @@ export const projectsApi = {
       .then((response) => response.data)
       .catch((error) => throwError(error)),
 
-  create: (data: any) => api.post("/website/projects/", data),
-  update: (id: string | number, data: any) => api.patch(`/website/projects/${id}/`, data),
+  create: (data: any, config?: AxiosRequestConfig) => api.post("/website/projects/", data, config),
+  update: (id: string | number, data: any, config?: AxiosRequestConfig) =>
+    api.patch(`/website/projects/${id}/`, data, config),
   delete: (id: string | number) => api.delete(`/website/projects/${id}/`),
 };
 
@@ -187,8 +188,9 @@ export const galleryApi = {
       .get("/website/gallery/")
       .then((response) => response.data)
       .catch((error) => throwError(error)),
-  create: (data: any) => api.post("/website/gallery/", data),
-  update: (id: string | number, data: any) => api.patch(`/website/gallery/${id}/`, data),
+  create: (data: any, config?: AxiosRequestConfig) => api.post("/website/gallery/", data, config),
+  update: (id: string | number, data: any, config?: AxiosRequestConfig) =>
+    api.patch(`/website/gallery/${id}/`, data, config),
   delete: (id: string | number) => api.delete(`/website/gallery/${id}/`),
 };
 
@@ -199,8 +201,10 @@ export const testimonialsApi = {
       .get("/website/testimonials/")
       .then((response) => response.data)
       .catch((error) => throwError(error)),
-  create: (data: any) => api.post("/website/testimonials/", data),
-  update: (id: string | number, data: any) => api.patch(`/website/testimonials/${id}/`, data),
+  create: (data: any, config?: AxiosRequestConfig) =>
+    api.post("/website/testimonials/", data, config),
+  update: (id: string | number, data: any, config?: AxiosRequestConfig) =>
+    api.patch(`/website/testimonials/${id}/`, data, config),
   delete: (id: string | number) => api.delete(`/website/testimonials/${id}/`),
 };
 
@@ -211,8 +215,9 @@ export const addressApi = {
       .get("/website/address/")
       .then((response) => response.data)
       .catch((error) => throwError(error)),
-  create: (data: any) => api.post("/website/address/", data),
-  update: (id: string | number, data: any) => api.patch(`/website/address/${id}/`, data),
+  create: (data: any, config?: AxiosRequestConfig) => api.post("/website/address/", data, config),
+  update: (id: string | number, data: any, config?: AxiosRequestConfig) =>
+    api.patch(`/website/address/${id}/`, data, config),
   delete: (id: string | number) => api.delete(`/website/address/${id}/`),
 };
 
@@ -224,7 +229,9 @@ export const organisationApi = {
       .get("/website/organisation/")
       .then((response) => response.data)
       .catch((error) => throwError(error)),
-  create: (data: any) => api.post("/website/organisation/", data),
-  update: (id: string | number, data: any) => api.patch(`/website/organisation/${id}/`, data),
+  create: (data: any, config?: AxiosRequestConfig) =>
+    api.post("/website/organisation/", data, config),
+  update: (id: string | number, data: any, config?: AxiosRequestConfig) =>
+    api.patch(`/website/organisation/${id}/`, data, config),
   delete: (id: string | number) => api.delete(`/website/organisation/${id}/`),
 };

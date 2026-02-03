@@ -27,24 +27,33 @@ export interface Project {
   location: string
   image: string
   expected_results: string[]
+  status?: string
+  budget?: number
+  created_at?: string
+  updated_at?: string
 }
 
 export interface GalleryImage {
   id: string
   src: string
-  alt: string
-  category?: string
+  description: string
+  created_at?: string
+  updated_at?: string
 }
 
 export interface Testimonial {
-  id: string,
+  id: string
   author_name: string
   author_role: string
-  author_image: string
+  author_image?: string
+  author_organisation?: string
   content: string
+  created_at?: string
+  updated_at?: string
 }
 
 export interface Organisation{
+  id: string
   name: string
   email: string
   phone_number: string
@@ -59,9 +68,25 @@ export interface Organisation{
 
 export interface Address {
   organisation: Organisation
+  id: string
   street: string
   city: string
   state: string
   country: string
   zip_code: string
+  metadata?: {
+    // Add metadata properties as needed
+  }
 }
+
+
+export interface FileItem {
+  id: string;
+  name: string;
+  type: string;
+  size: number;
+  parentId: string | null;
+  created_at: string;
+  updated_at: string;
+}
+  

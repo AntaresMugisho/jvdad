@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { fileStorage, FileItem } from "@/lib/file-storage";
 import { FileGrid } from "@/components/file-grid";
 import { UploadZone } from "@/components/upload-zone";
 import { Button } from "@/components/ui/button";
@@ -26,7 +25,7 @@ import { useToast } from "@/hooks/use-toast";
 
 export default function FileManager() {
   const [currentFolder, setCurrentFolder] = useState<string | null>(null);
-  const [items, setItems] = useState(fileStorage.getItems());
+  const [items, setItems] = useState([]);
   const [showNewFolder, setShowNewFolder] = useState(false);
   const [showRename, setShowRename] = useState<string | null>(null);
   const [folderName, setFolderName] = useState("");
