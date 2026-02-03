@@ -1,13 +1,13 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import { contentService } from '@/lib/services/content'
 import ProjectCard from '@/components/cards/ProjectCard'
 import { FaArrowLeft, FaCalendar, FaMapMarkerAlt, FaCheckCircle } from 'react-icons/fa'
+import { projectsApi } from '@/lib/api'
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
-    const project = await contentService.getProjectById(id)
+    const project = await projectsApi.detail(id)
     if (!project) return { title: 'Projet non trouvé' }
     return { title: `${project.title} · JVDAD Projets` }
 }
@@ -15,8 +15,8 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 export default async function ProjectDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
     const [project, allProjects] = await Promise.all([
-        contentService.getProjectById(id),
-        contentService.getProjects(),
+        projectsApi.detail(id),
+        projectsApi.list(),
     ])
 
     if (!project) {
@@ -25,7 +25,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
 
     // Get related projects (exclude current project, limit to 3)
     const relatedProjects = allProjects
-        .filter(p => p.id !== project.id && p.tags.some(tag => project.tags.includes(tag)))
+        .filter(p => p.id !== project.id && p.tags?.some(tag => project.tags?.includes(tag)))
         .slice(0, 3)
 
     return (
@@ -47,7 +47,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             <div className="relative h-[400px] md:h-[500px] overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900">
                 <Image
                     src={project.image}
-                    alt={project.title}
+                    alt={project.name}
                     fill
                     className="object-cover opacity-60"
                     priority
@@ -57,7 +57,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                 <div className="relative h-full container mx-auto px-4 flex items-end pb-12">
                     <div className="max-w-4xl">
                         <div className="flex flex-wrap gap-2 mb-4">
-                            {project.tags.map(tag => (
+                            {project.tags?.map(tag => (
                                 <span
                                     key={tag}
                                     className="px-3 py-1 bg-[var(--primary-green)] text-white text-sm rounded-full"
@@ -67,7 +67,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                             ))}
                         </div>
                         <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">
-                            {project.title}
+                            {project.name}
                         </h1>
                     </div>
                 </div>
@@ -95,7 +95,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                                     <div>
                                         <h4 className="font-semibold text-gray-900 mb-1">Objectif</h4>
                                         <p className="text-gray-600">
-                                            Améliorer les pratiques agricoles et renforcer la résilience des communautés locales.
+                                            {project.objective}
                                         </p>
                                     </div>
                                 </div>
@@ -104,7 +104,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                                     <div>
                                         <h4 className="font-semibold text-gray-900 mb-1">Localisation</h4>
                                         <p className="text-gray-600">
-                                            Région des Grands Lacs, RDC
+                                            {project.location}
                                         </p>
                                     </div>
                                 </div>
@@ -115,22 +115,12 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                         <div className="mt-8 pt-8 border-t border-gray-200">
                             <h3 className="text-xl font-semibold text-gray-900 mb-4">Impact attendu</h3>
                             <ul className="space-y-3">
-                                <li className="flex items-start gap-3">
-                                    <FaCheckCircle className="text-[var(--primary-green)] mt-1 flex-shrink-0" />
-                                    <span className="text-gray-700">Augmentation des rendements agricoles</span>
-                                </li>
-                                <li className="flex items-start gap-3">
-                                    <FaCheckCircle className="text-[var(--primary-green)] mt-1 flex-shrink-0" />
-                                    <span className="text-gray-700">Amélioration de la sécurité alimentaire</span>
-                                </li>
-                                <li className="flex items-start gap-3">
-                                    <FaCheckCircle className="text-[var(--primary-green)] mt-1 flex-shrink-0" />
-                                    <span className="text-gray-700">Renforcement des capacités locales</span>
-                                </li>
-                                <li className="flex items-start gap-3">
-                                    <FaCheckCircle className="text-[var(--primary-green)] mt-1 flex-shrink-0" />
-                                    <span className="text-gray-700">Protection de l'environnement</span>
-                                </li>
+                                {project.expected_results?.map((result: string, index: number) => (
+                                    <li key={index} className="flex items-start gap-3">
+                                        <FaCheckCircle className="text-[var(--primary-green)] mt-1 flex-shrink-0" />
+                                        <span className="text-gray-700">{result}</span>
+                                    </li>
+                                ))}
                             </ul>
                         </div>
                     </article>

@@ -15,11 +15,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 export default async function BlogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-    const { id } = await params
+    const { slug } = await params
     const [post, allPosts] = await Promise.all([
         blogAPI.posts.detail(slug),
         blogAPI.posts.list(),
     ])
+
+    console.log(post)
 
     if (!post) {
         notFound()
@@ -27,11 +29,11 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
 
     // Get related posts (exclude current post, limit to 3)
     const relatedPosts = allPosts
-        .filter(p => p.id !== post.id && p.tags.some(tag => post.tags?.includes(tag)))
+        .filter(p => p.id !== post.id && p.tags?.some(tag => post.tags?.includes(tag)))
         .slice(0, 3)
 
     const shareText = "Cet artcle posté sur le site de JVDAD pourrait vous intérersser.\n"
-    const shareUrl = typeof window !== 'undefined' ? window.location.href : 'https://jvdad.vercel.app/blog/' + post.id
+    const shareUrl = typeof window !== 'undefined' ? window.location.href : 'https://jvdad.org/blog/' + post.slug
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -62,7 +64,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
                 <div className="relative h-full container mx-auto px-4 flex items-end pb-12">
                     <div className="max-w-4xl">
                         <div className="flex flex-wrap gap-2 mb-4">
-                            {post.tags.map(tag => (
+                            {post.tags?.map(tag => (
                                 <span
                                     key={tag}
                                     className="px-3 py-1 bg-[var(--primary-green)] text-white text-sm rounded-full"
@@ -77,11 +79,11 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
                         <div className="flex items-center gap-6 text-white/90">
                             <div className="flex items-center gap-2">
                                 <FaUser className="text-sm" />
-                                <span>{post.author || 'JVDAD'}</span>
+                                <span>{'JVDAD'}</span>
                             </div>
                             <div className="flex items-center gap-2">
                                 <FaCalendar className="text-sm" />
-                                <span>{new Date(post.date).toLocaleDateString('fr-FR', {
+                                <span>{new Date(post.created_at).toLocaleDateString('fr-FR', {
                                     year: 'numeric',
                                     month: 'long',
                                     day: 'numeric'
@@ -98,8 +100,8 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
 
                     {/* Article Content */}
                     <article className="bg-white rounded-xl shadow-md p-8 md:p-12 mb-8">
-                        {post.content && Array.isArray(post.content) ? (
-                            <BlockRenderer blocks={post.content} />
+                        {post.content  ? (
+                            <BlockRenderer blocks={post.content.blocks} />
                         ) : (
                             <div className="prose prose-lg max-w-none">
                                 <p className="text-gray-500 italic">Contenu non disponible ou format incorrect.</p>

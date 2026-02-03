@@ -132,7 +132,7 @@ export const blogAPI = {
         .get("/blog/posts/")
         .then((response) => response.data)
         .catch((error) => throwError(error)),
-    detail: (slug: string) => api.get(`/blog/posts/${slug}/`),
+    detail: (slug: string) => api.get(`/blog/posts/${slug}/`).then((response) => response.data),
     create: (data: any) =>
       api.post("/blog/posts/", {...data, image: data.coverImage, category_id: 1}),
     update: (slug: string, data: any) => api.patch(`/blog/posts/${slug}/`, data),
@@ -145,7 +145,7 @@ export const blogAPI = {
         .get("/blog/categories/")
         .then((response) => response.data)
         .catch((error) => throwError(error)),
-    detail: (id: number) => api.get(`/blog/categories/${id}/`),
+    detail: (id: number) => api.get(`/blog/categories/${id}/`).then((response) => response.data),
     create: (name: string) => api.post("/blog/categories/", { name }),
     update: (id: number, data: any) => api.patch(`/blog/categories/${id}/`, data),
     delete: (id: number) => api.delete(`/blog/categories/${id}/`),

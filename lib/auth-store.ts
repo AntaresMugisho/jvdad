@@ -100,7 +100,7 @@ export const useAuthStore = create<AuthState>()(
             },
             async logout() {
                 try {
-                    await authApi.logout?.()
+                    await authApi.logout()
                 } catch (error) {
                     console.error('Erreur lors de la déconnexion', error)
                 } finally {

@@ -1,15 +1,11 @@
 import Section from '@/components/Section'
 import PostCard from '@/components/cards/PostCard'
 import { blogAPI } from '@/lib/api'
-import { useState } from 'react'
-import { Post } from '@/lib/types'
 
 export const metadata = { title: 'Blog · JVDAD' }
 
 export default async function Page() {
-  const [posts, setPosts] = useState<Post[]>([])
-
-  await blogAPI.posts.list().then(setPosts)
+  const posts = await blogAPI.posts.list()
 
   return (
     <Section title="Articles" description="Nos publications et retours d'expérience.">
