@@ -9,5 +9,5 @@ const whatsappNumber = '243815414265'
 
 export const links = {
   whatsapp: `https://wa.me/${whatsappNumber}`,
-  mailto: 'mailto:jvdadituri2@gmail.com',
+  mailto: 'mailto:contact@jvdad.org',
 }

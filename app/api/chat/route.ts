@@ -1,12 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { GoogleGenerativeAI } from '@google/generative-ai'
-import { posts } from '@/lib/data/posts'
-import { projects } from '@/lib/data/projects'
-import { testimonials } from '@/lib/data/testimonials'
 import { org, links } from '@/lib/config'
+import { blogAPI, projectsApi, testimonialsApi } from '@/lib/api'
 
 // Initialize Gemini API
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '')
+
+const [posts, projects, testimonials] = await Promise.all([
+  blogAPI.posts.list(),
+  projectsApi.list(),
+  testimonialsApi.list(),
+])
+
 
 export async function POST(req: NextRequest) {
   try {
@@ -42,10 +47,10 @@ export async function POST(req: NextRequest) {
     Email: ${links.mailto}
     
     PROJETS RÉCENTS:
-    ${projects.map(p => `- ${p.title}: ${p.description}`).join('\n')}
+    ${projects.map(p => `- ${p.name}: ${p.description}`).join('\n')}
     
     ARTICLES DE BLOG:
-    ${posts.map(p => `- ${p.title}: ${p.excerpt}`).join('\n')}
+    ${posts.map(p => `- ${p.name}: ${p.excerpt}`).join('\n')}
     
     TÉMOIGNAGES:
     ${testimonials.map(t => `- ${t.name} (${t.role}): ${t.content}`).join('\n')}
@@ -66,10 +71,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ reply: "Configuration manquante: Clé API Gemini introuvable. Veuillez contacter l'administrateur." }, { status: 500 })
     }
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-3-flash-preview' })
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite' })
 
     const chat = model.startChat({
-      history: messages.slice(1, -1).map((m: any) => ({
+      history: messages.slice(0, -1).map((m: any) => ({
         role: m.role === 'user' ? 'user' : 'model',
         parts: [{ text: m.content }],
       })),
@@ -81,7 +86,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ reply: text })
   } catch (e) {
-    console.error("Chat API Error:", e)
+    console.log("Chat API Error:", e)
     return NextResponse.json({ reply: "Désolé, je rencontre des difficultés techniques. Vous pouvez nous écrire sur WhatsApp ou nous envoyer un mail." }, { status: 500 })
   }
 }
