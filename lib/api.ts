@@ -133,7 +133,7 @@ export const blogAPI = {
         .catch((error) => throwError(error)),
     detail: (slug: string) => api.get(`/blog/posts/${slug}/`).then((response) => response.data),
     create: (data: any) =>
-      api.post("/blog/posts/", {...data, image: data.coverImage, category_id: 1}),
+      api.post("/blog/posts/", {...data, image: data.coverImage, category_id: 3}),
     update: (slug: string, data: any) => api.patch(`/blog/posts/${slug}/`, data),
     delete: (slug: string) => api.delete(`/blog/posts/${slug}/`),
   },
