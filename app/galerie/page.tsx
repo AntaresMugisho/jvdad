@@ -4,6 +4,9 @@ import { galleryApi } from '@/lib/api'
 
 export const metadata = { title: 'Galerie · JVDAD' }
 
+export const revalidate = 60
+
+
 export default async function Page() {
   const images = await galleryApi.list()
   return (

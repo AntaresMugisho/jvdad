@@ -30,10 +30,16 @@ export default function Page() {
             </div>
 
             <div className="card p-6">
-              <h3 className="font-semibold text-slate-900 text-lg mb-2">Adresse</h3>
+              <h3 className="font-semibold text-slate-900 text-lg mb-2">Siège JVDAD</h3>
               <p className="text-slate-600">
-                Siège JVDAD<br />
                 {org.address}
+              </p>
+            </div>
+
+            <div className="card p-6">
+              <h3 className="font-semibold text-slate-900 text-lg mb-2">Bureau de la Coordination</h3>
+              <p className="text-slate-600">
+                N⁰ 002, Avenue Lonzamuzi, Quartier Hoho, Commune Mbunya en Ville de Bunia.
               </p>
             </div>
           </div>

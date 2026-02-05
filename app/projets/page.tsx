@@ -4,6 +4,9 @@ import { projectsApi } from '@/lib/api'
 
 export const metadata = { title: 'Projets · JVDAD' }
 
+export const revalidate = 60
+
+
 export default async function Page() {
   const projects = await projectsApi.list()
   return (

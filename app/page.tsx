@@ -490,9 +490,16 @@ export default async function Page() {
                   </div>
 
                   <div>
-                    <h4 className="font-semibold mb-2">Nos Bureaux</h4>
+                    <h4 className="font-semibold mb-2">Siège</h4>
                     <p className="text-green-100">
                       {org.address}
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold mb-2">Bureau de la Coordination</h4>
+                    <p className="text-green-100">
+                      N⁰ 002, Avenue Lonzamuzi, Quartier Hoho, Commune Mbunya en Ville de Bunia.
                     </p>
                   </div>
 
@@ -519,7 +526,7 @@ export default async function Page() {
 
                   <div className="pt-6 border-t border-green-700">
                     <p className="text-sm text-green-200">
-                      Nous répondons généralement sous 24-48 heures
+                      Nous nous engageons à répondre à toutes les demandes dans les 24 à 48 heures ouvrées. Pour les urgences, n'hésitez pas à nous appeler directement.
                     </p>
                   </div>
                 </div>
