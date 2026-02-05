@@ -1,7 +1,9 @@
 
 import axios, { AxiosError, type AxiosRequestConfig } from "axios";
 
-const BASE_API_URL = "https://api.jvdad.org/api/v1"
+const BASE_API_URL = process.env.BASE_URL
+
+console.log(BASE_API_URL)
 
 export const api = axios.create({
   baseURL: BASE_API_URL,
