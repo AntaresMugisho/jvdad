@@ -361,7 +361,7 @@ export default function GalleryPage() {
                     <td className="p-3">
                       <div className="flex h-16 w-24 items-center justify-center overflow-hidden rounded-md border bg-muted">
                         {item.src ? (
-                          <Image src={item.src} description={item.description} width={96} height={64} className="object-cover" />
+                          <Image src={item.src} alt={item.description} width={96} height={64} className="object-cover" />
                         ) : (
                           <ImageIcon className="h-6 w-6 text-muted-foreground" />
                         )}
@@ -435,7 +435,7 @@ export default function GalleryPage() {
               <div className="flex flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed p-6 text-center">
                 {previewUrl ? (
                   <div className="relative h-40 w-full overflow-hidden rounded-lg border">
-                    <Image src={previewUrl} description="Aperçu" fill className="object-cover" />
+                    <Image src={previewUrl} alt="Aperçu" fill className="object-cover" />
                   </div>
                 ) : (
                   <ImageIcon className="h-12 w-12 text-muted-foreground" />

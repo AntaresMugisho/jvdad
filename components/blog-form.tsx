@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { BlogPost } from "@/lib/blog-storage";
 import { Button } from "@/components/ui/button";
 
 import { Input } from "@/components/ui/input";
@@ -9,10 +8,11 @@ import { Card } from "@/components/ui/card";
 import { BlogEditor } from "./blog-editor";
 import { X, Upload, Image as ImageIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Post } from "@/lib/types";
 
 interface BlogFormProps {
-  post?: BlogPost;
-  onSubmit: (data: Omit<BlogPost, "id" | "createdAt" | "updatedAt">) => void;
+  post?: Post;
+  onSubmit: (data: Omit<Post, "id" | "createdAt" | "updatedAt">) => void;
   onCancel: () => void;
 }
 

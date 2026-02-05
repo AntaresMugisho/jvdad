@@ -15,23 +15,25 @@ import { authApi } from "@/lib/api";
 
 export default function Profile() {
 
-  const user = useAuthStore((state) => state.user);
+  const { user } = useAuthStore();
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState(user?.email || "");
-  const [photo, setPhoto] = useState("");
-  
- 
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string>("");
+
+
 
   const { toast } = useToast();
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    setPhotoFile(file);
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        setPhoto(reader.result as string);
+        setPhotoPreview(reader.result as string);
       };
       reader.readAsDataURL(file);
     }
@@ -40,13 +42,38 @@ export default function Profile() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await authApi.updateMe({
-      first_name: firstName,
-      last_name: lastName,
-      email: email,
-      photo: photo,
-    });
-    toast({ title: "Profil mis à jour avec succès" });
+    try {
+      const updateData: any = {
+        first_name: firstName || user?.first_name,
+        last_name: lastName || user?.last_name,
+      };
+
+      // Only include photo if a new file was uploaded
+      if (photoFile) {
+        const formData = new FormData();
+        formData.append('photo', photoPreview);
+        formData.append('first_name', updateData.first_name);
+        formData.append('last_name', updateData.last_name);
+
+        await authApi.updateMe(formData);
+      } else {
+        await authApi.updateMe(updateData);
+      }
+
+      toast({ title: "Profil mis à jour avec succès" });
+
+      // Reset form states
+      // setFirstName("");
+      // setLastName("");
+      // setPhotoFile(null);
+      // setPhotoPreview("");
+    } catch (error: any) {
+      toast({
+        title: "Erreur",
+        description: error?.message || "Impossible de mettre à jour le profil",
+        variant: "destructive",
+      });
+    }
   };
 
   const getInitials = () => {
@@ -66,7 +93,7 @@ export default function Profile() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="flex items-center gap-6">
             <Avatar className="h-24 w-24">
-              <AvatarImage src={user?.photo || ""} />
+              <AvatarImage src={photoPreview || user?.photo || ""} />
               <AvatarFallback>{getInitials()}</AvatarFallback>
             </Avatar>
             <div>

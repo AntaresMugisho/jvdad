@@ -40,15 +40,15 @@ const menuItems = [
     url: "/projects",
     icon: Briefcase,
   },
+  // {
+  //   title: "Fichiers",
+  //   url: "/fichiers",
+  //   icon: FolderOpen,
+  // },
   {
-    title: "Fichiers",
-    url: "/fichiers",
-    icon: FolderOpen,
-  },
-  {
-    title: "Profil",
-    url: "/profil",
-    icon: User,
+    title: "Témoignages",
+    url: "/testimonials",
+    icon: Quote,
   },
   {
     title: "Information",
@@ -56,15 +56,15 @@ const menuItems = [
     icon: Building2,
   },
   {
-    title: "Témoignages",
-    url: "/testimonials",
-    icon: Quote,
+    title: "Profil",
+    url: "/profil",
+    icon: User,
   },
   {
     title: "Sécurité",
     url: "/securite",
     icon: Shield,
-  },
+  }
 ];
 
 export function AppSidebar() {
@@ -87,20 +87,24 @@ export function AppSidebar() {
           <SidebarGroupLabel>Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {menuItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={pathname === item.url}
-                    data-testid={`link-${item.title.toLowerCase().replace(/\s+/g, '-')}`}
-                  >
-                    <Link href={item.url as any}>
-                      <item.icon className="h-4 w-4" />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {menuItems.map((item) => {
+                const isActive = pathname === item.url;
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={isActive}
+                      data-testid={`link-${item.title.toLowerCase().replace(/\s+/g, '-')}`}
+                      className={isActive ? "bg-green-100 text-primary font-semibold border-l-4 border-green-500" : ""}
+                    >
+                      <Link href={item.url as any}>
+                        <item.icon className="h-4 w-4" />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
