@@ -1,7 +1,7 @@
 
 import axios, { AxiosError, type AxiosRequestConfig } from "axios";
 
-const BASE_API_URL = process.env.BASE_URL
+const BASE_API_URL = process.env.NEXT_PUBLIC_BASE_URL || process.env.BASE_URL
 
 console.log(BASE_API_URL)
 
@@ -34,18 +34,8 @@ api.interceptors.request.use(
   },
 );
 
-const throwError = (err: AxiosError) => {
-  console.error(err);
-  let errorData = (err.response?.data as any)?.object;
-  if (!errorData) {
-    errorData = err.response?.data;
-  }
-
-  throw {
-    code: errorData?.response_code,
-    message: errorData?.response_message,
-    data: { ...errorData?.response_data, code: errorData?.response_code },
-  };
+const throwError = (err: any) => {
+  throw new Error(err.response?.data?.detail || err.message);
 };
 
 
@@ -86,7 +76,7 @@ export const authApi = {
     api
       .post("/auth/token/refresh.", { refresh })
       .then((response) => response.data)
-      .catch((error) => throwError(error)),
+      .catch((error) => throwError(error.response)),
 
   tokenVerify: (token: string) =>
     api
@@ -105,6 +95,18 @@ export const authApi = {
       .get("/auth/me/")
       .then((response) => response.data)
       .catch((error) => throwError(error)),
+
+  updateMe: (data: any) =>
+    api
+      .patch("/auth/me/", data)
+      .then((response) => response.data)
+      .catch((error) => throwError(error)),
+
+  updatePassword: (data: any) =>
+    api
+      .patch("/auth/password/update/", data)
+      .then((response) => response.data)
+      .catch((error) => {throw error.response.data}),
 
   logout: () =>
     api
@@ -135,7 +137,7 @@ export const blogAPI = {
         .catch((error) => throwError(error)),
     detail: (slug: string) => api.get(`/blog/posts/${slug}/`).then((response) => response.data),
     create: (data: any) =>
-      api.post("/blog/posts/", {...data, image: data.coverImage, category_id: 3, status: "published"}),
+      api.post("/blog/posts/", { ...data, image: data.coverImage, category_id: 3, status: "published" }),
     update: (slug: string, data: any) => api.patch(`/blog/posts/${slug}/`, data),
     delete: (slug: string) => api.delete(`/blog/posts/${slug}/`),
   },

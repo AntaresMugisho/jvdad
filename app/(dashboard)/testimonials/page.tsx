@@ -361,7 +361,7 @@ export default function TestimonialsPage() {
       </div>
 
       <Dialog open={showForm} onOpenChange={(open) => !open && setShowForm(false)}>
-        <DialogContent className="max-w-xl">
+        <DialogContent className="max-w-xl bg-white">
           <DialogHeader>
             <DialogTitle>{editingId ? "Modifier le témoignage" : "Nouveau témoignage"}</DialogTitle>
           </DialogHeader>

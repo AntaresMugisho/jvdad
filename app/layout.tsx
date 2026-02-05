@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import ChatWidget from '@/components/ChatWidget'
 import { org } from '@/lib/config'
+import { Toaster } from '@/components/ui/toaster'
 
 export const metadata: Metadata = {
   title: `${org.name} · JVDAD Asbl`,
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="flex-1 pt-16">{children}</main>
         <Footer />
         <ChatWidget />
+        <Toaster />
       </body>
     </html>
   )

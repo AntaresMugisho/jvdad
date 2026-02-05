@@ -11,31 +11,18 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Upload } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuthStore } from "@/lib/auth-store";
-
-interface ProfileData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  organization: string;
-  bio: string;
-  avatar: string;
-}
+import { authApi } from "@/lib/api";
 
 export default function Profile() {
 
   const user = useAuthStore((state) => state.user);
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState(user?.email || "");
+  const [photo, setPhoto] = useState("");
   
-  const [profile, setProfile] = useState<ProfileData>(() => {
-    const saved = {
-        firstName: user?.first_name || "Jean",
-        lastName: user?.last_ame || "Dupont",
-        email: user?.email || "jean.dupont@asbl.org",
-        organization: "JVDAD",
-        bio: "Administrateur",
-        avatar: user?.image || "",
-      };
-    return saved;
-  });
+ 
 
   const { toast } = useToast();
 
@@ -44,15 +31,21 @@ export default function Profile() {
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        setProfile({ ...profile, avatar: reader.result as string });
+        setPhoto(reader.result as string);
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    localStorage.setItem("asbl-profile", JSON.stringify(profile));
+
+    await authApi.updateMe({
+      first_name: firstName,
+      last_name: lastName,
+      email: email,
+      photo: photo,
+    });
     toast({ title: "Profil mis à jour avec succès" });
   };
 
@@ -73,7 +66,7 @@ export default function Profile() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="flex items-center gap-6">
             <Avatar className="h-24 w-24">
-              <AvatarImage src={user?.image || ""} />
+              <AvatarImage src={user?.photo || ""} />
               <AvatarFallback>{getInitials()}</AvatarFallback>
             </Avatar>
             <div>
@@ -102,8 +95,8 @@ export default function Profile() {
               <Label htmlFor="firstName">Prénom *</Label>
               <Input
                 id="firstName"
-                value={user?.first_name || ""}
-                onChange={(e) => {}}
+                value={firstName || user?.first_name}
+                onChange={(e) => setFirstName(e.target.value)}
                 required
                 data-testid="input-firstname"
               />
@@ -113,8 +106,8 @@ export default function Profile() {
               <Label htmlFor="lastName">Nom *</Label>
               <Input
                 id="lastName"
-                value={user?.last_name || ""}
-                onChange={(e) => {}}
+                value={lastName || user?.last_name}
+                onChange={(e) => setLastName(e.target.value)}
                 required
                 data-testid="input-lastname"
               />
@@ -126,8 +119,9 @@ export default function Profile() {
             <Input
               id="email"
               type="email"
+              disabled={true}
               value={user?.email || ""}
-              onChange={(e) => {}}
+              // onChange={(e) => setEmail(e.target.value)}
               required
               data-testid="input-email"
             />

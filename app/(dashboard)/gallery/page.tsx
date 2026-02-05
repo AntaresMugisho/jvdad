@@ -424,7 +424,7 @@ export default function GalleryPage() {
       )}
 
       <Dialog open={showForm} onOpenChange={(open) => !open && setShowForm(false)}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-lg bg-white">
           <DialogHeader>
             <DialogTitle>{editingId ? "Modifier l'image" : "Nouvelle image"}</DialogTitle>
           </DialogHeader>

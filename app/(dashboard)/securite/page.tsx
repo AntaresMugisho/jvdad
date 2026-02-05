@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Shield, Key } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { authApi } from "@/lib/api";
 
 export default function Security() {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -18,7 +19,7 @@ export default function Security() {
   const [sessionTimeout, setSessionTimeout] = useState(true);
   const { toast } = useToast();
 
-  const handlePasswordChange = (e: React.FormEvent) => {
+  const handlePasswordChange = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (newPassword !== confirmPassword) {
@@ -39,10 +40,25 @@ export default function Security() {
       return;
     }
 
-    toast({ title: "Mot de passe modifié avec succès" });
-    setCurrentPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
+    try {
+      await authApi.updatePassword({
+        old_password: currentPassword,
+        new_password: newPassword,
+        confirm_password: confirmPassword,
+      });
+
+      toast({ title: "Mot de passe modifié avec succès" });
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: error.old_password || error.new_password || error.confirm_password || "Impossible de modifier le mot de passe",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -110,7 +126,7 @@ export default function Security() {
         </form>
       </Card>
 
-      <Card className="p-6">
+      {/* <Card className="p-6">
         <div className="flex items-start gap-4 mb-6">
           <Shield className="h-6 w-6 text-muted-foreground mt-1" />
           <div className="flex-1">
@@ -150,7 +166,7 @@ export default function Security() {
             />
           </div>
         </div>
-      </Card>
+      </Card> */}
     </div>
   );
 }

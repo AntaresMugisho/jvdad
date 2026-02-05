@@ -487,7 +487,7 @@ export default function ProjectsPage() {
       )}
 
       <Dialog open={showForm} onOpenChange={(open) => !open && setShowForm(false)}>
-        <DialogContent className="max-w-3xl">
+        <DialogContent className="max-w-3xl bg-white">
           <DialogHeader>
             <DialogTitle>{editingId ? "Modifier le projet" : "Nouveau projet"}</DialogTitle>
           </DialogHeader>

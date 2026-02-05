@@ -7,6 +7,9 @@ import { tokenStorage } from '@/stores/token-store'
 interface User {
     email: string
     name?: string
+    first_name?: string
+    last_name?: string
+    photo?: string
 }
 
 interface LoginResult {
@@ -24,23 +27,6 @@ interface AuthState {
     logout: () => Promise<void>
     ensureSession: () => Promise<boolean>
 }
-
-function resolveUserFromResponse(data: any, fallbackEmail: string): User {
-    const userData = data?.user ?? data
-
-    const email = userData?.email ?? fallbackEmail
-    const name =
-        userData?.name ??
-        userData?.full_name ??
-        userData?.username ??
-        email.split('@')[0]
-
-    return {
-        email,
-        name,
-    }
-}
-
 
 export const useAuthStore = create<AuthState>()(
     persist(
@@ -108,6 +94,7 @@ export const useAuthStore = create<AuthState>()(
                     set({ user: null, isAuthenticated: false, error: null })
                 }
             },
+
             async ensureSession() {
                 if (get().isCheckingAuth) {
                     return get().isAuthenticated
@@ -122,8 +109,7 @@ export const useAuthStore = create<AuthState>()(
                         throw new Error('Aucun jeton d\'accès enregistré')
                     }
 
-                    const profile = await authApi.me()
-                    const user = resolveUserFromResponse(profile, get().user?.email ?? '')
+                    const user = await authApi.me()
 
                     set({
                         user,
@@ -142,7 +128,7 @@ export const useAuthStore = create<AuthState>()(
             },
         }),
         {
-            name: 'jvdad-auth-storage',
+            name: 'jvdad-storage',
             storage: createJSONStorage(() => localStorage),
             partialize: (state) => ({
                 user: state.user,
