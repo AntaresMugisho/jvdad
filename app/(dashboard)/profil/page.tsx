@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Upload } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuthStore } from "@/lib/auth-store";
 
 interface ProfileData {
   firstName: string;
@@ -21,18 +22,19 @@ interface ProfileData {
 }
 
 export default function Profile() {
+
+  const user = useAuthStore((state) => state.user);
+  
   const [profile, setProfile] = useState<ProfileData>(() => {
-    const saved = localStorage.getItem("asbl-profile");
-    return saved
-      ? JSON.parse(saved)
-      : {
-        firstName: "Jean",
-        lastName: "Dupont",
-        email: "jean.dupont@asbl.org",
-        organization: "ASBL Example",
-        bio: "Administrateur de l'ASBL",
-        avatar: "",
+    const saved = {
+        firstName: user?.first_name || "Jean",
+        lastName: user?.last_ame || "Dupont",
+        email: user?.email || "jean.dupont@asbl.org",
+        organization: "JVDAD",
+        bio: "Administrateur",
+        avatar: user?.image || "",
       };
+    return saved;
   });
 
   const { toast } = useToast();
@@ -55,7 +57,7 @@ export default function Profile() {
   };
 
   const getInitials = () => {
-    return `${profile.firstName.charAt(0)}${profile.lastName.charAt(0)}`.toUpperCase();
+    return `${user?.first_name?.charAt(0)}${user?.last_name?.charAt(0)}`.toUpperCase();
   };
 
   return (
@@ -71,7 +73,7 @@ export default function Profile() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="flex items-center gap-6">
             <Avatar className="h-24 w-24">
-              <AvatarImage src={profile.avatar} />
+              <AvatarImage src={user?.image || ""} />
               <AvatarFallback>{getInitials()}</AvatarFallback>
             </Avatar>
             <div>
@@ -100,10 +102,8 @@ export default function Profile() {
               <Label htmlFor="firstName">Prénom *</Label>
               <Input
                 id="firstName"
-                value={profile.firstName}
-                onChange={(e) =>
-                  setProfile({ ...profile, firstName: e.target.value })
-                }
+                value={user?.first_name || ""}
+                onChange={(e) => {}}
                 required
                 data-testid="input-firstname"
               />
@@ -113,10 +113,8 @@ export default function Profile() {
               <Label htmlFor="lastName">Nom *</Label>
               <Input
                 id="lastName"
-                value={profile.lastName}
-                onChange={(e) =>
-                  setProfile({ ...profile, lastName: e.target.value })
-                }
+                value={user?.last_name || ""}
+                onChange={(e) => {}}
                 required
                 data-testid="input-lastname"
               />
@@ -128,10 +126,8 @@ export default function Profile() {
             <Input
               id="email"
               type="email"
-              value={profile.email}
-              onChange={(e) =>
-                setProfile({ ...profile, email: e.target.value })
-              }
+              value={user?.email || ""}
+              onChange={(e) => {}}
               required
               data-testid="input-email"
             />
@@ -141,10 +137,8 @@ export default function Profile() {
             <Label htmlFor="organization">Organisation</Label>
             <Input
               id="organization"
-              value={profile.organization}
-              onChange={(e) =>
-                setProfile({ ...profile, organization: e.target.value })
-              }
+              value={"JVDAD"}
+              disabled={true}
               data-testid="input-organization"
             />
           </div>
@@ -153,10 +147,8 @@ export default function Profile() {
             <Label htmlFor="bio">Bio</Label>
             <Textarea
               id="bio"
-              value={profile.bio}
-              onChange={(e) =>
-                setProfile({ ...profile, bio: e.target.value })
-              }
+              value={"Administrateur"}
+              disabled={true}
               rows={4}
               placeholder="Quelques mots sur vous..."
               data-testid="input-bio"

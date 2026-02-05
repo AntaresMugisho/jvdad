@@ -84,19 +84,19 @@ export const authApi = {
 
   tokenRefresh: (refresh: string) =>
     api
-      .post("/auth/token/refresh", { refresh })
+      .post("/auth/token/refresh.", { refresh })
       .then((response) => response.data)
       .catch((error) => throwError(error)),
 
   tokenVerify: (token: string) =>
     api
-      .post("/auth/token/verify", { token })
+      .post("/auth/token/verify/", { token })
       .then((response) => response.data)
       .catch((error) => throwError(error)),
 
   tokenInvalidate: () =>
     api
-      .post("/auth/token/invalidate")
+      .post("/auth/token/invalidate/")
       .then((response) => response.data)
       .catch((error) => throwError(error)),
 
@@ -135,7 +135,7 @@ export const blogAPI = {
         .catch((error) => throwError(error)),
     detail: (slug: string) => api.get(`/blog/posts/${slug}/`).then((response) => response.data),
     create: (data: any) =>
-      api.post("/blog/posts/", {...data, image: data.coverImage, category_id: 3}),
+      api.post("/blog/posts/", {...data, image: data.coverImage, category_id: 3, status: "published"}),
     update: (slug: string, data: any) => api.patch(`/blog/posts/${slug}/`, data),
     delete: (slug: string) => api.delete(`/blog/posts/${slug}/`),
   },

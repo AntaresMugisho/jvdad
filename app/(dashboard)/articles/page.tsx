@@ -68,7 +68,7 @@ export default function Blog() {
     }
   };
 
-  const handleEdit = (post: BlogPost) => {
+  const handleEdit = (post: Post) => {
     setEditingPost(post);
     setShowForm(true);
   };

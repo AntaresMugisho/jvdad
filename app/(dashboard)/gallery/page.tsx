@@ -473,29 +473,6 @@ export default function GalleryPage() {
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="src">Lien direct (optionnel)</Label>
-              <Input
-                id="src"
-                value={form.src}
-                onChange={(e) => setForm((prev) => ({ ...prev, src: e.target.value }))}
-                placeholder="https://..."
-              />
-              <p className="text-xs text-muted-foreground">
-                Fournissez un lien si vous hébergez l'image ailleurs. Sinon, téléchargez un fichier ci-dessus.
-              </p>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="category">Catégorie</Label>
-              <Input
-                id="category"
-                value={form.category ?? ""}
-                onChange={(e) => setForm((prev) => ({ ...prev, category: e.target.value }))}
-                placeholder="Ex: Agriculture, Événements, Terrain"
-              />
-            </div>
-
             <Button type="submit" className="w-full" disabled={loading}>
               {editingId ? "Enregistrer les modifications" : "Ajouter à la galerie"}
             </Button>

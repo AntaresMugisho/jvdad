@@ -625,15 +625,6 @@ export default function ProjectsPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="image-url">Lien de l'image</Label>
-                <Input
-                  id="image-url"
-                  value={form.image ?? ""}
-                  onChange={(event) => handleFieldChange("image", event.target.value)}
-                  placeholder="https://..."
-                />
-              </div>
-              <div className="space-y-2">
                 <Label htmlFor="image-upload">Téléverser une image</Label>
                 <div className="flex items-center gap-3">
                   <Label

@@ -422,15 +422,6 @@ export default function TestimonialsPage() {
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="author_image">Lien de l'image</Label>
-              <Input
-                id="author_image"
-                value={form.author_image}
-                onChange={(event) => handleFieldChange("author_image", event.target.value)}
-                placeholder="https://..."
-              />
-            </div>
 
             <div className="space-y-2">
               <Label htmlFor="content">Contenu *</Label>
