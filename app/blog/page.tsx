@@ -4,6 +4,8 @@ import { blogAPI } from '@/lib/api'
 
 export const metadata = { title: 'Blog · JVDAD' }
 
+export const revalidate = 60
+
 export default async function Page() {
   const posts = await blogAPI.posts.list()
 

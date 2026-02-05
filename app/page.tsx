@@ -14,6 +14,10 @@ import { FaLeaf, FaUsers, FaSeedling, FaHandsHelping, FaArrowRight, FaTractor, F
 import { org } from '@/lib/config'
 import { blogAPI, projectsApi, testimonialsApi, galleryApi } from '@/lib/api'
 
+
+export const revalidate = 60
+
+
 export default async function Page() {
   const [projects, posts, images, testimonials] = await Promise.all([
     projectsApi.list(),
